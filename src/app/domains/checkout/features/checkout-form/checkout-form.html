@@ -1,0 +1,154 @@
+<a class="back-link" routerLink="/cart">← Volver al carrito</a>
+
+<h2>Checkout</h2>
+
+@if (error()) {
+  <div class="error-message">{{ error() }}</div>
+}
+
+<div class="checkout-layout">
+  <div class="checkout-main">
+    <section class="section cart-summary">
+      <h3>Resumen del pedido</h3>
+      @for (item of cartService.cartItems(); track item.variant.id) {
+        <div class="cart-item">
+          <span class="item-name">{{ item.variant.flavor }} - {{ item.variant.size }}</span>
+          <span class="item-qty">x{{ item.quantity }}</span>
+          <span class="item-price">{{ item.variant.price | currency: 'ARS' : 'symbol' : '1.0-0' }}</span>
+        </div>
+      }
+    </section>
+
+    <section class="section customer-form">
+      <h3>Tus datos</h3>
+
+      <label>
+        Nombre
+        <input
+          [value]="formData().name"
+          (input)="updateField('name', $any($event.target).value)"
+          type="text"
+          required
+          placeholder="Ej: Juan Pérez"
+        />
+      </label>
+
+      <label>
+        Email
+        <input
+          [value]="formData().email"
+          (input)="updateField('email', $any($event.target).value)"
+          type="email"
+          required
+          placeholder="ej: juan@mail.com"
+        />
+      </label>
+
+      <label>
+        Teléfono
+        <input
+          [value]="formData().phone"
+          (input)="updateField('phone', $any($event.target).value)"
+          type="tel"
+          required
+          placeholder="Ej: +54 11 5555-1234"
+        />
+      </label>
+
+      <label>
+        Dirección
+        <input
+          [value]="formData().address"
+          (input)="updateField('address', $any($event.target).value)"
+          type="text"
+          required
+          placeholder="Calle y número"
+        />
+      </label>
+
+      <label>
+        Ciudad
+        <input
+          [value]="formData().city"
+          (input)="updateField('city', $any($event.target).value)"
+          type="text"
+          required
+          placeholder="Ej: CABA"
+        />
+      </label>
+
+      <label>
+        Notas (opcional)
+        <textarea
+          [value]="formData().notes"
+          (input)="updateField('notes', $any($event.target).value)"
+          placeholder="Algún detalle extra..."
+        ></textarea>
+      </label>
+    </section>
+  </div>
+
+  <aside class="checkout-sidebar">
+    <section class="section shipping-section">
+      <h3>Método de envío</h3>
+
+      @for (option of shippingOptions(); track option.id) {
+        <div
+          class="shipping-card"
+          [class.selected]="selectedShipping()?.id === option.id"
+          (click)="selectShipping(option)"
+        >
+          <div class="shipping-card-header">
+            <span class="radio-indicator">
+              @if (selectedShipping()?.id === option.id) {
+                <span class="radio-dot"></span>
+              }
+            </span>
+            <strong>{{ option.name }}</strong>
+          </div>
+          <p class="shipping-desc">{{ option.description }}</p>
+          <p class="shipping-price">
+            @if (option.price) {
+              {{ option.price | currency: 'ARS' : 'symbol' : '1.0-0' }}
+            } @else {
+              A confirmar
+            }
+          </p>
+        </div>
+      }
+    </section>
+
+    <section class="section total-section">
+      <div class="total-row">
+        <span>Subtotal</span>
+        <span>{{ cartService.subtotal() | currency: 'ARS' : 'symbol' : '1.0-0' }}</span>
+      </div>
+      <div class="total-row">
+        <span>Envío</span>
+        <span>
+          @if (selectedShipping()?.price) {
+            {{ selectedShipping()!.price | currency: 'ARS' : 'symbol' : '1.0-0' }}
+          } @else {
+            —
+          }
+        </span>
+      </div>
+      <div class="total-row total-final">
+        <span>Total</span>
+        <span>{{ total() | currency: 'ARS' : 'symbol' : '1.0-0' }}</span>
+      </div>
+
+      <button
+        class="submit-btn"
+        (click)="submit()"
+        [disabled]="loading()"
+      >
+        @if (loading()) {
+          Procesando...
+        } @else {
+          Confirmar pedido
+        }
+      </button>
+    </section>
+  </aside>
+</div>
