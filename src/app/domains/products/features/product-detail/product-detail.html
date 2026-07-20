@@ -1,0 +1,21 @@
+<div>
+  @if (product(); as product) {
+    <img [src]="product.image" alt="product.slug" />
+    <h3>{{ product.brand }}</h3>
+    <h2>{{ product.name }}</h2>
+    <p>{{ product.description }}</p>
+    <div>
+      <span (click)="updateQuantity(quantity() - 1)">-</span>
+      <input [value]="quantity()" (input)="quantity.set(+$event.target.value)" />
+      <span (click)="updateQuantity(quantity() + 1)">+</span>
+    </div>
+    <div>
+      @for (variant of product.variants; track variant.id) {
+        <button (click)="selectVariant(variant)">{{ variant.size }} / {{ variant.flavor }}</button>
+      }
+    </div>
+    <button (click)="addToCart()" [disabled]="!selectedVariant()">Agregar al carrito</button>
+  } @else {
+    <p>Cargando...</p>
+  }
+</div>

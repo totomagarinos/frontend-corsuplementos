@@ -1,0 +1,13 @@
+<div class="product-grid">
+  @for (product of products(); track product.id) {
+    <a [routerLink]="['/products', product.slug]" class="product-card">
+      <img [src]="product.image" [alt]="product.name" />
+      <h3>{{ product.brand }}</h3>
+      <h2>{{ product.name }}</h2>
+      <span class="category">{{ product.category_display }}</span>
+      <span class="price">${{ product.base_price }}</span>
+    </a>
+  } @empty {
+    <p>No hay productos disponibles</p>
+  }
+</div>
