@@ -1,0 +1,26 @@
+.cart-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding: 15px 0;
+}
+.item-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cart-summary {
+  margin-top: 30px;
+  text-align: right;
+}
+.summary-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 15px;
+}
