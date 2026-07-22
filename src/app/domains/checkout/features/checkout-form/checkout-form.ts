@@ -85,10 +85,10 @@ export class CheckoutForm {
     this.error.set('');
 
     this.orderService.createOrder(payload).subscribe({
-      next: () => {
+      next: (order) => {
         this.loading.set(false);
         this.cartService.clearCart();
-        this.router.navigate(['/order/confirmation']);
+        this.router.navigate(['/order', order.id, 'confirmation']);
       },
       error: (err) => {
         this.loading.set(false);

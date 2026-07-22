@@ -1,6 +1,6 @@
 <div>
   @if (product(); as product) {
-    <img [src]="product.image" alt="product.slug" />
+    <img [src]="product.image" alt="{{ product.slug }}" />
     <h3>{{ product.brand }}</h3>
     <h2>{{ product.name }}</h2>
     <p>{{ product.description }}</p>
