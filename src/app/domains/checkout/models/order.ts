@@ -10,7 +10,7 @@ export interface OrderItem {
 
 export interface Order {
   id: number;
-  session_id: string;
+  user: number | null;
   customer_name: string;
   customer_email: string;
   customer_phone: string;
@@ -31,7 +31,6 @@ export interface CreateOrderPayload {
   customer_phone: string;
   shipping_address: string;
   shipping_option: number;
-  session_id: string;
   notes?: string;
   items: { variant: number; quantity: number }[];
 }

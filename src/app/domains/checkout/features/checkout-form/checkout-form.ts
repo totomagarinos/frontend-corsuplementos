@@ -3,7 +3,6 @@ import { CheckoutFormData, CheckoutSchema } from './checkout-form.schema';
 import { safeParse } from 'valibot';
 import { CartService } from '@/app/domains/cart/services/cart.service';
 import { OrderService, ShippingService } from '../../services';
-import { SessionService } from '@/app/core/session.service';
 import { Router, RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { ShippingOption } from '../../models/shipping-option';
@@ -19,7 +18,6 @@ export class CheckoutForm {
   readonly cartService = inject(CartService);
   readonly shippingService = inject(ShippingService);
   readonly orderService = inject(OrderService);
-  readonly sessionService = inject(SessionService);
   readonly router = inject(Router);
 
   readonly shippingOptions = toSignal(this.shippingService.getShippingOptions(), {
@@ -73,7 +71,6 @@ export class CheckoutForm {
       customer_phone: this.formData().phone,
       shipping_address: `${this.formData().address}, ${this.formData().city}`,
       shipping_option: this.selectedShipping()!.id,
-      session_id: this.sessionService.sessionId(),
       notes: this.formData().notes,
       items: this.cartService.cartItems().map((item) => ({
         variant: item.variant.id,

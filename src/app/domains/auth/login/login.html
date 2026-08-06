@@ -1,0 +1,43 @@
+<h2>Iniciar sesión</h2>
+
+@if (errorMessage()) {
+  <div class="error-message">{{ errorMessage() }}</div>
+}
+
+<form class="login-form" (ngSubmit)="onSubmit()">
+  <label>
+    Email
+    <input
+      [value]="loginForm().email"
+      (input)="updateField('email', $any($event.target).value)"
+      type="email"
+      required
+      placeholder="ej: juan@mail.com"
+      autocomplete="email"
+    />
+  </label>
+
+  <label>
+    Contraseña
+    <input
+      [value]="loginForm().password"
+      (input)="updateField('password', $any($event.target).value)"
+      type="password"
+      required
+      placeholder="Tu contraseña"
+      autocomplete="current-password"
+    />
+  </label>
+
+  <button class="submit-btn" type="submit" [disabled]="loading()">
+    @if (loading()) {
+      Ingresando...
+    } @else {
+      Iniciar sesión
+    }
+  </button>
+</form>
+
+<p class="register-link">
+  ¿No tenés cuenta? <a routerLink="/register">Registrate</a>
+</p>
