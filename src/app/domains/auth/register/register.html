@@ -4,7 +4,7 @@
   <div class="error-message">{{ errorMessage() }}</div>
 }
 
-<form class="register-form" (ngSubmit)="onSubmit()">
+<form class="register-form" (submit)="onSubmit($event)">
   <label>
     Email
     <input
@@ -38,6 +38,4 @@
   </button>
 </form>
 
-<p class="login-link">
-  ¿Ya tenés cuenta? <a routerLink="/login">Iniciar sesión</a>
-</p>
+<p class="login-link">¿Ya tenés cuenta? <a routerLink="/login">Iniciar sesión</a></p>

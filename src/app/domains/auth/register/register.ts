@@ -29,7 +29,9 @@ export class Register {
     }));
   }
 
-  async onSubmit() {
+  async onSubmit(event: Event) {
+    event.preventDefault();
+
     if (!this.validation().success) {
       this.errorMessage.set('Por favor, revisa los campos del formulario.');
       return;
