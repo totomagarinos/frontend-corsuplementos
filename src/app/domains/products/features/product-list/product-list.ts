@@ -1,7 +1,8 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ProductService } from '../../services/product.service';
-import { Product } from '../../models/product';
 import { RouterLink } from '@angular/router';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { debounceTime, merge, of, skip, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -9,13 +10,24 @@ import { RouterLink } from '@angular/router';
   templateUrl: './product-list.html',
   styleUrl: './product-list.scss',
 })
-export class ProductList implements OnInit {
+export class ProductList {
   private readonly productService = inject(ProductService);
-  readonly products = signal<Product[]>([]);
+  readonly searchInput = signal<string>('');
 
-  ngOnInit(): void {
-    this.productService.getProducts().subscribe((data) => {
-      this.products.set(data);
-    });
+  readonly products = toSignal(
+    merge(
+      of('').pipe(switchMap((term) => this.productService.getProducts(term))),
+
+      toObservable(this.searchInput).pipe(
+        skip(1),
+        debounceTime(500),
+        switchMap((term) => this.productService.getProducts(term)),
+      ),
+    ),
+    { initialValue: [] },
+  );
+
+  onSearchInput(event: Event) {
+    this.searchInput.set((event.target as HTMLInputElement).value);
   }
 }
