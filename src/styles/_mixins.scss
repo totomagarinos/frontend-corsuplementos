@@ -1,0 +1,61 @@
+// =========================================================
+// CorSuplementos — Mixins
+// =========================================================
+@use 'variables' as *;
+
+// Mobile-first: los estilos base son para mobile,
+// este mixin agrega complejidad a partir del breakpoint indicado (min-width).
+// Uso: @include respond-to('md') { ... } → aplica desde 768px hacia arriba
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'sm' {
+    @media (min-width: $bp-sm) {
+      @content;
+    }
+  } @else if $breakpoint == 'md' {
+    @media (min-width: $bp-md) {
+      @content;
+    }
+  } @else if $breakpoint == 'lg' {
+    @media (min-width: $bp-lg) {
+      @content;
+    }
+  } @else if $breakpoint == 'xl' {
+    @media (min-width: $bp-xl) {
+      @content;
+    }
+  }
+}
+
+// Truncar texto a N líneas
+@mixin line-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Focus visible consistente en toda la app (accesibilidad)
+@mixin focus-ring {
+  &:focus-visible {
+    outline: none;
+    box-shadow: $shadow-red-glow;
+  }
+}
+
+// Botón "ghost" reutilizable (outline + fill on hover)
+@mixin btn-ghost {
+  background: transparent;
+  border: 1px solid $color-border;
+  color: $color-text-muted;
+  border-radius: $radius-full;
+  font-family: $font-body;
+  font-weight: $fw-semibold;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    border-color: $color-red;
+    color: $color-white;
+    background: rgba($color-red, 0.08);
+  }
+}
