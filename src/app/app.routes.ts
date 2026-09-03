@@ -20,12 +20,14 @@ export const routes: Routes = [
   {
     path: appRoutes.public.login,
     title: 'Iniciar sesión | Corsuplementos',
-    loadComponent: () => import('./domains/auth/login/login').then((m) => m.Login),
+    loadComponent: () =>
+      import('./domains/auth/features/login/login').then((m) => m.Login),
   },
   {
     path: appRoutes.public.register,
     title: 'Crear cuenta | Corsuplementos',
-    loadComponent: () => import('./domains/auth/register/register').then((m) => m.Register),
+    loadComponent: () =>
+      import('./domains/auth/features/register/register').then((m) => m.Register),
   },
   {
     path: appRoutes.public.products,

@@ -1,78 +1,147 @@
-.register-form {
-  max-width: 420px;
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
+@use 'variables' as *;
+@use 'mixins' as *;
 
-  label {
-    display: block;
-    margin-bottom: 0.75rem;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #333;
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: calc(100vh - #{$header-height});
+  padding: $space-6 $space-4;
+  background: $color-bg;
+
+  @include respond-to('md') {
+    align-items: center;
+    padding: $space-10 $space-4;
   }
+}
 
-  input {
-    display: block;
-    width: 100%;
-    margin-top: 0.25rem;
-    padding: 0.6rem 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    box-sizing: border-box;
+.register-card {
+  width: 100%;
+  max-width: 380px;
+  padding: $space-6 $space-5;
+  background: $color-bg-elevated;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
 
-    &:focus {
-      outline: none;
-      border-color: #4a90d9;
-      box-shadow: 0 0 0 2px rgba(74, 144, 217, 0.15);
-    }
+  @include respond-to('md') {
+    padding: $space-8 $space-6;
+  }
+}
+
+.register-title {
+  font-family: $font-display;
+  font-size: $fs-xl;
+  font-weight: $fw-regular; // Anton ya es bold por diseño
+  color: $color-white;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 0 0 $space-5;
+  text-align: center;
+
+  @include respond-to('md') {
+    font-size: $fs-2xl;
   }
 }
 
 .error-message {
-  max-width: 420px;
-  background: #fdecea;
-  color: #b71c1c;
-  padding: 0.75rem 1rem;
-  border-radius: 6px;
-  margin-bottom: 1rem;
+  margin: 0 0 $space-4;
+  padding: $space-3 $space-4;
+  background: rgba($color-red, 0.1);
+  border: 1px solid rgba($color-red, 0.4);
+  border-radius: $radius-md;
+  color: $color-red-light;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  text-align: center;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+
+  label {
+    font-family: $font-body;
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    color: $color-text-muted;
+  }
+
+  input {
+    padding: $space-3 $space-4;
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    color: $color-white;
+    font-family: $font-body;
+    font-size: $fs-base;
+    transition:
+      border-color $transition-fast,
+      box-shadow $transition-fast,
+      background-color $transition-fast;
+
+    &::placeholder {
+      color: $color-text-faint;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $color-red;
+      background: $color-black-soft;
+      box-shadow: $shadow-red-glow;
+    }
+  }
 }
 
 .submit-btn {
-  display: block;
-  width: 100%;
-  margin-top: 1rem;
-  padding: 0.8rem;
-  background: #4a90d9;
-  color: #fff;
+  margin-top: $space-2;
+  padding: $space-3 $space-5;
+  background: $color-red;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: $radius-full;
+  color: $color-white;
+  font-family: $font-body;
+  font-size: $fs-base;
+  font-weight: $fw-bold;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
   cursor: pointer;
-  transition: background 0.15s;
+  transition:
+    background-color $transition-fast,
+    transform $transition-fast,
+    opacity $transition-fast;
 
   &:hover:not(:disabled) {
-    background: #357abd;
+    background: $color-red-dark;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
   }
 
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
   }
 }
 
 .login-link {
-  font-size: 0.9rem;
-  color: #555;
+  margin: $space-5 0 0;
+  text-align: center;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  color: $color-text-muted;
 
   a {
-    color: #4a90d9;
+    color: $color-red-light;
+    font-weight: $fw-semibold;
     text-decoration: none;
-    font-weight: 600;
 
     &:hover {
       text-decoration: underline;

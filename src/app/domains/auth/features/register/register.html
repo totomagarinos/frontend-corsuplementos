@@ -1,41 +1,47 @@
-<h2>Crear cuenta</h2>
+<div class="register-page">
+  <div class="register-card">
+    <h2 class="register-title">Crear cuenta</h2>
 
-@if (errorMessage()) {
-  <div class="error-message">{{ errorMessage() }}</div>
-}
-
-<form class="register-form" (submit)="onSubmit($event)">
-  <label>
-    Email
-    <input
-      [value]="registerForm().email"
-      (input)="updateField('email', $any($event.target).value)"
-      type="email"
-      required
-      placeholder="ej: juan@mail.com"
-      autocomplete="email"
-    />
-  </label>
-
-  <label>
-    Contraseña
-    <input
-      [value]="registerForm().password"
-      (input)="updateField('password', $any($event.target).value)"
-      type="password"
-      required
-      placeholder="Mínimo 8 caracteres"
-      autocomplete="new-password"
-    />
-  </label>
-
-  <button class="submit-btn" type="submit" [disabled]="loading()">
-    @if (loading()) {
-      Creando cuenta...
-    } @else {
-      Registrarme
+    @if (errorMessage()) {
+      <div class="error-message">{{ errorMessage() }}</div>
     }
-  </button>
-</form>
 
-<p class="login-link">¿Ya tenés cuenta? <a routerLink="/login">Iniciar sesión</a></p>
+    <form class="register-form" (submit)="onSubmit($event)">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          [value]="registerForm().email"
+          (input)="updateField('email', $any($event.target).value)"
+          type="email"
+          required
+          placeholder="ej: juan@mail.com"
+          autocomplete="email"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input
+          id="password"
+          [value]="registerForm().password"
+          (input)="updateField('password', $any($event.target).value)"
+          type="password"
+          required
+          placeholder="Mínimo 8 caracteres"
+          autocomplete="new-password"
+        />
+      </div>
+
+      <button class="submit-btn" type="submit" [disabled]="loading()">
+        @if (loading()) {
+          Creando cuenta...
+        } @else {
+          Registrarme
+        }
+      </button>
+    </form>
+
+    <p class="login-link">¿Ya tenés cuenta? <a routerLink="/login">Iniciar sesión</a></p>
+  </div>
+</div>
