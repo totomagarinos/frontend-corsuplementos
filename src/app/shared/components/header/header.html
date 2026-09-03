@@ -1,20 +1,33 @@
 <header class="header">
-  <a class="brand" routerLink="/">Corsuplementos</a>
+  <a class="brand" routerLink="/">
+    <img src="/cs_logo.png" alt="CorSuplementos" class="brand-logo" />
+  </a>
 
-  <nav class="main-nav">
-    <a class="nav-link" routerLink="/cart">
-      Carrito
-      @if (cartService.itemsCount() > 0) {
-        <span class="badge">{{ cartService.itemsCount() }}</span>
+  <div class="input-container">
+    <input
+      class="search-input"
+      type="text"
+      (input)="onSearchInput($event)"
+      placeholder="Buscar productos..."
+    />
+  </div>
+
+  <div class="header-actions">
+    <nav class="main-nav">
+      <a class="nav-link" routerLink="/cart">
+        Carrito
+        @if (cartService.itemsCount() > 0) {
+          <span class="badge">{{ cartService.itemsCount() }}</span>
+        }
+      </a>
+    </nav>
+
+    <nav class="auth-nav">
+      @if (authService.isAuthenticated()) {
+        <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+      } @else {
+        <a class="nav-link" routerLink="/login">Iniciar sesión</a>
       }
-    </a>
-  </nav>
-
-  <nav class="auth-nav">
-    @if (authService.isAuthenticated()) {
-      <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
-    } @else {
-      <a class="nav-link" routerLink="/login">Iniciar sesión</a>
-    }
-  </nav>
+    </nav>
+  </div>
 </header>

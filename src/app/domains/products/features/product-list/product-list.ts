@@ -1,8 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { RouterLink } from '@angular/router';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { debounceTime, merge, of, skip, switchMap } from 'rxjs';
+import { delay, of, switchMap } from 'rxjs';
+import { SearchService } from '@/app/shared/services/search.service';
 
 @Component({
   selector: 'app-product-list',
@@ -12,22 +13,19 @@ import { debounceTime, merge, of, skip, switchMap } from 'rxjs';
 })
 export class ProductList {
   private readonly productService = inject(ProductService);
-  readonly searchInput = signal<string>('');
+  private readonly searchService = inject(SearchService);
 
   readonly products = toSignal(
-    merge(
-      of('').pipe(switchMap((term) => this.productService.getProducts(term))),
-
-      toObservable(this.searchInput).pipe(
-        skip(1),
-        debounceTime(500),
-        switchMap((term) => this.productService.getProducts(term)),
+    toObservable(this.searchService.searchInput).pipe(
+      switchMap((term, index) =>
+        index === 0
+          ? this.productService.getProducts(term)
+          : of(term).pipe(
+              delay(500),
+              switchMap((t) => this.productService.getProducts(t)),
+            ),
       ),
     ),
     { initialValue: [] },
   );
-
-  onSearchInput(event: Event) {
-    this.searchInput.set((event.target as HTMLInputElement).value);
-  }
 }

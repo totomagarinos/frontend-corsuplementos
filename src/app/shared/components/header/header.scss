@@ -1,0 +1,184 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// Base = mobile. El header se arma en 2 filas chicas
+// (marca+acciones arriba, buscador abajo) y a partir de 'md'
+// pasa a una sola fila como layout de escritorio.
+.header {
+  position: sticky;
+  top: 0;
+  z-index: $z-header;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  background-color: rgba($color-bg, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid $color-border;
+
+  @include respond-to('md') {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: $space-6;
+    height: $header-height;
+    padding: 0 $space-6;
+  }
+}
+
+// -----------------------------
+// Brand
+// -----------------------------
+.brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.brand-logo {
+  height: 32px;
+  width: auto;
+  display: block;
+  border-radius: 50%;
+
+  @include respond-to('md') {
+    height: 46px;
+    border-radius: 50%;
+  }
+}
+
+// -----------------------------
+// Buscador
+// -----------------------------
+.input-container {
+  // en mobile ocupa toda la fila propia (ver order abajo)
+  order: 3;
+  flex: 1 1 100%;
+
+  @include respond-to('md') {
+    order: 0;
+    flex: 1;
+    max-width: 420px;
+  }
+}
+
+.search-input {
+  width: 100%;
+  padding: $space-2 $space-4;
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-full;
+  color: $color-white;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  transition:
+    border-color $transition-fast,
+    box-shadow $transition-fast,
+    background-color $transition-fast;
+
+  @include respond-to('md') {
+    padding: $space-3 $space-4;
+  }
+
+  &::placeholder {
+    color: $color-text-faint;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-red;
+    background: $color-bg-elevated;
+    box-shadow: $shadow-red-glow;
+  }
+}
+
+// -----------------------------
+// Acciones (carrito / auth)
+// -----------------------------
+.header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-4;
+  flex: 1 1 auto;
+
+  @include respond-to('md') {
+    flex: 0 0 auto;
+    gap: $space-5;
+  }
+}
+
+.main-nav,
+.auth-nav {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+
+  @include respond-to('md') {
+    gap: $space-5;
+  }
+}
+
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  color: $color-text-muted;
+  text-decoration: none;
+  font-family: $font-body;
+  font-weight: $fw-semibold;
+  font-size: $fs-sm;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: $space-2 0;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-white;
+  }
+
+  // subrayado con leve inclinación — eco del trazo del logo
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background: $color-red;
+    transform: skewX(-12deg);
+    transition: width $transition-base;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+// Badge del carrito — estilo "sello", leve rotación
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -14px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $color-red;
+  color: $color-white;
+  font-size: $fs-xs;
+  font-weight: $fw-bold;
+  border-radius: $radius-full;
+  transform: rotate(-8deg);
+  box-shadow: $shadow-sm;
+}
+
+.logout-btn {
+  @include btn-ghost;
+  padding: $space-2 $space-4;
+  font-size: $fs-sm;
+}
