@@ -1,4 +1,4 @@
-enum ShippingType {
+export enum ShippingType {
   PICKUP = 'pickup',
   DELIVERY = 'delivery',
   NATIONAL = 'national',

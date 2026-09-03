@@ -4,8 +4,8 @@ export const CheckoutSchema = object({
   name: pipe(string(), minLength(2, 'El nombre es muy corto')),
   email: pipe(string(), email('Email inválido')),
   phone: pipe(string(), minLength(7, 'Teléfono inválido')),
-  address: pipe(string(), minLength(8, 'Dirección muy corta')),
-  city: pipe(string(), minLength(2, 'Ciudad requerida')),
+  address: optional(string()),
+  department: optional(string()),
   notes: optional(string()),
 });
 

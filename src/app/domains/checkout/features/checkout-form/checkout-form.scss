@@ -1,55 +1,117 @@
-.back-link {
-  display: inline-block;
-  margin-bottom: 1rem;
-  color: #555;
-  text-decoration: none;
+@use 'variables' as *;
+@use 'mixins' as *;
 
-  &:hover {
-    color: #000;
+.checkout-page {
+  max-width: $container-max;
+  margin: 0 auto;
+  padding: $space-4;
+
+  @include respond-to('md') {
+    padding: $space-6;
   }
 }
 
-h2 {
-  margin-bottom: 0.5rem;
+.back-link {
+  display: inline-block;
+  margin-bottom: $space-3;
+  color: $color-text-muted;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-white;
+  }
+}
+
+.checkout-page__title {
+  margin: 0 0 $space-5;
+  font-family: $font-display;
+  font-weight: $fw-regular; // Anton ya es bold por diseño
+  font-size: $fs-xl;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: $color-white;
+
+  @include respond-to('md') {
+    font-size: $fs-2xl;
+  }
 }
 
 .error-message {
-  background: #fdecea;
-  color: #b71c1c;
-  padding: 0.75rem 1rem;
-  border-radius: 6px;
-  margin-bottom: 1rem;
+  margin-bottom: $space-4;
+  padding: $space-3 $space-4;
+  background: rgba($color-red, 0.1);
+  border: 1px solid rgba($color-red, 0.4);
+  border-radius: $radius-md;
+  color: $color-red-light;
+  font-family: $font-body;
+  font-size: $fs-sm;
 }
 
+// -----------------------------
+// Layout — mobile-first
+// -----------------------------
 .checkout-layout {
   display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 2rem;
-  align-items: start;
-}
+  grid-template-columns: 1fr;
+  gap: $space-5;
 
-.section {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1.25rem;
-  margin-bottom: 1rem;
-
-  h3 {
-    margin: 0 0 1rem;
-    font-size: 1.05rem;
+  @include respond-to('lg') {
+    grid-template-columns: 1fr 340px;
+    gap: $space-6;
+    align-items: start;
   }
 }
 
-// ── Cart summary ──
+.checkout-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
 
+  @include respond-to('lg') {
+    position: sticky;
+    top: calc(#{$header-height} + #{$space-6});
+  }
+}
+
+.section {
+  padding: $space-5;
+  margin-bottom: $space-4;
+  background: $color-bg-elevated;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  h2 {
+    margin: 0 0 $space-4;
+    font-family: $font-body;
+    font-weight: $fw-bold;
+    font-size: $fs-md;
+    color: $color-white;
+  }
+}
+
+.checkout-sidebar .section {
+  margin-bottom: 0;
+}
+
+// -----------------------------
+// Resumen del pedido
+// -----------------------------
 .cart-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #f0f0f0;
-  font-size: 0.9rem;
+  gap: $space-3;
+  padding: $space-2 0;
+  border-bottom: 1px solid $color-border;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  color: $color-text-muted;
 
   &:last-child {
     border-bottom: none;
@@ -57,160 +119,365 @@ h2 {
 
   .item-name {
     flex: 1;
+    color: $color-white;
   }
 
   .item-qty {
-    color: #666;
+    color: $color-text-faint;
   }
 
   .item-price {
-    font-weight: 600;
     min-width: 80px;
     text-align: right;
+    font-weight: $fw-semibold;
+    color: $color-white;
   }
 }
 
-// ── Customer form ──
-
+// -----------------------------
+// Formulario
+// -----------------------------
 .customer-form {
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+    margin-bottom: $space-4;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
   label {
-    display: block;
-    margin-bottom: 0.75rem;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #333;
+    font-family: $font-body;
+    font-size: $fs-sm;
+    font-weight: $fw-semibold;
+    color: $color-text-muted;
   }
 
   input,
+  select,
   textarea {
-    display: block;
     width: 100%;
-    margin-top: 0.25rem;
-    padding: 0.6rem 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    box-sizing: border-box;
+    padding: $space-3 $space-4;
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    color: $color-white;
+    font-family: $font-body;
+    font-size: $fs-base;
+    transition:
+      border-color $transition-fast,
+      box-shadow $transition-fast,
+      background-color $transition-fast;
+
+    &::placeholder {
+      color: $color-text-faint;
+    }
 
     &:focus {
       outline: none;
-      border-color: #4a90d9;
-      box-shadow: 0 0 0 2px rgba(74, 144, 217, 0.15);
+      border-color: $color-red;
+      background: $color-black-soft;
+      box-shadow: $shadow-red-glow;
+    }
+  }
+
+  select {
+    appearance: none;
+    padding-right: $space-6; // deja lugar para la flecha custom
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%23888' d='M6 8 0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right $space-4 center;
+    background-size: 10px 7px;
+    cursor: pointer;
+
+    // el placeholder "Seleccioná tu departamento" es un <option disabled selected>,
+    // no un ::placeholder — hay que apuntarlo distinto
+    &:invalid,
+    option[value=''] {
+      color: $color-text-faint;
     }
   }
 
   textarea {
-    min-height: 70px;
+    min-height: 80px;
     resize: vertical;
   }
 }
 
-// ── Shipping cards ──
+.delivery-note {
+  margin: $space-3 0;
+  padding: $space-3 $space-4;
+  background: rgba($color-white, 0.04);
+  border-left: 2px solid $color-red;
+  border-radius: $radius-sm;
+  font-family: $font-body;
+  font-size: $fs-xs;
+  color: $color-text-muted;
+  line-height: 1.5;
+}
+
+// -----------------------------
+// Método de envío
+// -----------------------------
+.shipping-options {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
 
 .shipping-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.5rem;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
   cursor: pointer;
-  transition: border-color 0.15s;
+  transition:
+    border-color $transition-fast,
+    background-color $transition-fast;
 
   &:hover {
-    border-color: #999;
+    border-color: $color-border-light;
   }
 
   &.selected {
-    border-color: #4a90d9;
-    background: #f5f9ff;
+    border-color: $color-red;
+    background: rgba($color-red, 0.06);
   }
 }
 
-.shipping-card-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.25rem;
+// input nativo oculto visualmente pero accesible (foco/teclado/lector de pantalla)
+.shipping-card__radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+
+  &:focus-visible ~ .shipping-card__indicator {
+    box-shadow: $shadow-red-glow;
+  }
 }
 
-.radio-indicator {
+.shipping-card__indicator {
+  flex-shrink: 0;
   width: 18px;
   height: 18px;
-  border-radius: 50%;
-  border: 2px solid #aaa;
+  margin-top: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 2px solid $color-border-light;
+  border-radius: $radius-full;
+  transition: border-color $transition-fast;
+}
+
+.shipping-card.selected .shipping-card__indicator {
+  border-color: $color-red;
+
+  &::after {
+    content: '';
+    width: 9px;
+    height: 9px;
+    border-radius: $radius-full;
+    background: $color-red;
+  }
+}
+
+.shipping-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.shipping-card__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: $space-2;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  color: $color-white;
+}
+
+.shipping-card__price {
+  font-weight: $fw-semibold;
+  font-size: $fs-sm;
+  color: $color-white;
+  white-space: nowrap;
+}
+
+.shipping-card__desc {
+  font-family: $font-body;
+  font-size: $fs-xs;
+  color: $color-text-muted;
+}
+
+// -----------------------------
+// Método de pago
+// -----------------------------
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.payment-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition:
+    border-color $transition-fast,
+    background-color $transition-fast;
+
+  &:hover {
+    border-color: $color-border-light;
+  }
+
+  &.selected {
+    border-color: $color-red;
+    background: rgba($color-red, 0.06);
+  }
+
+  &.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+
+    &:hover {
+      border-color: $color-border;
+    }
+  }
+}
+
+.payment-card__radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+
+  &:focus-visible ~ .payment-card__indicator {
+    box-shadow: $shadow-red-glow;
+  }
+}
+
+.payment-card__indicator {
   flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid $color-border-light;
+  border-radius: $radius-full;
+  transition: border-color $transition-fast;
 }
 
-.selected .radio-indicator {
-  border-color: #4a90d9;
+.payment-card.selected .payment-card__indicator {
+  border-color: $color-red;
+
+  &::after {
+    content: '';
+    width: 9px;
+    height: 9px;
+    border-radius: $radius-full;
+    background: $color-red;
+  }
 }
 
-.radio-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #4a90d9;
+.payment-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  color: $color-white;
+
+  strong {
+    font-weight: $fw-semibold;
+  }
 }
 
-.shipping-desc {
-  margin: 0.25rem 0 0 1.625rem;
-  font-size: 0.8rem;
-  color: #666;
+.payment-card__desc {
+  font-family: $font-body;
+  font-size: $fs-xs;
+  color: $color-text-muted;
 }
 
-.shipping-price {
-  margin: 0.25rem 0 0 1.625rem;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-// ── Total section ──
-
+// -----------------------------
+// Total
+// -----------------------------
 .total-row {
   display: flex;
   justify-content: space-between;
-  padding: 0.4rem 0;
-  font-size: 0.9rem;
+  padding: $space-2 0;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  color: $color-text-muted;
 }
 
 .total-final {
-  border-top: 2px solid #333;
-  margin-top: 0.5rem;
-  padding-top: 0.75rem;
-  font-weight: 700;
-  font-size: 1.05rem;
+  margin-top: $space-2;
+  padding-top: $space-3;
+  border-top: 1px solid $color-border;
+  font-weight: $fw-bold;
+  font-size: $fs-base;
+  color: $color-white;
 }
 
 .submit-btn {
   display: block;
   width: 100%;
-  margin-top: 1rem;
-  padding: 0.8rem;
-  background: #4a90d9;
-  color: #fff;
+  margin-top: $space-4;
+  padding: $space-4;
+  background: $color-red;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: $radius-full;
+  color: $color-white;
+  font-family: $font-body;
+  font-size: $fs-base;
+  font-weight: $fw-bold;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
   cursor: pointer;
-  transition: background 0.15s;
+  transition:
+    background-color $transition-fast,
+    transform $transition-fast,
+    opacity $transition-fast;
 
   &:hover:not(:disabled) {
-    background: #357abd;
+    background: $color-red-dark;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
   }
 
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
-  }
-}
-
-// ── Responsive ──
-
-@media (max-width: 768px) {
-  .checkout-layout {
-    grid-template-columns: 1fr;
   }
 }
