@@ -1,18 +1,27 @@
-<div>
-  <div class="input-container">
-    <input type="text" (input)="onSearchInput($event)" />
-  </div>
+<div class="products-page">
+  <h1 class="products-page__title">Nuestros productos</h1>
+
   <div class="product-grid">
     @for (product of products(); track product.id) {
       <a [routerLink]="['/products', product.slug]" class="product-card">
-        <img [src]="product.image" [alt]="product.name" />
-        <h3>{{ product.brand }}</h3>
-        <h2>{{ product.name }}</h2>
-        <span class="category">{{ product.category_display }}</span>
-        <span class="price">${{ product.base_price }}</span>
+        <div class="product-card__image">
+          <img [src]="product.image" [alt]="product.name" />
+        </div>
+
+        <div class="product-card__body">
+          <span class="product-card__brand">{{ product.brand }}</span>
+          <h3 class="product-card__name">{{ product.name }}</h3>
+          <span class="product-card__category">{{ product.category_display }}</span>
+        </div>
+
+        <div class="product-card__footer">
+          <span class="product-card__price">${{ product.base_price }}</span>
+        </div>
       </a>
     } @empty {
-      <p>No hay productos disponibles</p>
+      <div class="empty-state">
+        <p>No hay productos disponibles</p>
+      </div>
     }
   </div>
 </div>

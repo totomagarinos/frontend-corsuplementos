@@ -3,6 +3,7 @@ export interface Variant {
   sku: string;
   size: string;
   flavor: string;
+  product_name: string;
   price: string;
   stock: number;
 }

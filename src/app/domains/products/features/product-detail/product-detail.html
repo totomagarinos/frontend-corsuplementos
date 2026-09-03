@@ -1,21 +1,67 @@
-<div>
+<div class="product-detail">
   @if (product(); as product) {
-    <img [src]="product.image" alt="{{ product.slug }}" />
-    <h3>{{ product.brand }}</h3>
-    <h2>{{ product.name }}</h2>
-    <p>{{ product.description }}</p>
-    <div>
-      <span (click)="updateQuantity(quantity() - 1)">-</span>
-      <input [value]="quantity()" (input)="quantity.set(+$event.target.value)" />
-      <span (click)="updateQuantity(quantity() + 1)">+</span>
+    <div class="product-detail__gallery">
+      <img [src]="product.image" [alt]="product.name" />
     </div>
-    <div>
-      @for (variant of product.variants; track variant.id) {
-        <button (click)="selectVariant(variant)">{{ variant.size }} / {{ variant.flavor }}</button>
-      }
+
+    <div class="product-detail__info">
+      <span class="product-detail__brand">{{ product.brand }}</span>
+      <h1 class="product-detail__name">{{ product.name }}</h1>
+      <span class="product-detail__price">${{ product.base_price }}</span>
+      <p class="product-detail__description">{{ product.description }}</p>
+
+      <div class="variant-selector">
+        <span class="variant-selector__label">Elegí una opción</span>
+        <div class="variant-selector__options">
+          @for (variant of product.variants; track variant.id) {
+            <button
+              type="button"
+              class="variant-option"
+              [class.selected]="selectedVariant()?.id === variant.id"
+              (click)="selectVariant(variant)"
+            >
+              {{ variant.size }} / {{ variant.flavor }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="quantity-selector">
+        <span class="quantity-selector__label">Cantidad</span>
+        <div class="quantity-selector__controls">
+          <button
+            type="button"
+            class="qty-btn"
+            (click)="updateQuantity(quantity() - 1)"
+            aria-label="Restar cantidad"
+          >
+            −
+          </button>
+          <input
+            class="qty-input"
+            type="number"
+            min="1"
+            [value]="quantity()"
+            (input)="quantity.set(+$any($event.target).value)"
+          />
+          <button
+            type="button"
+            class="qty-btn"
+            (click)="updateQuantity(quantity() + 1)"
+            aria-label="Sumar cantidad"
+          >
+            +
+          </button>
+        </div>
+      </div>
+
+      <button class="add-to-cart-btn" (click)="addToCart()" [disabled]="!selectedVariant()">
+        Agregar al carrito
+      </button>
     </div>
-    <button (click)="addToCart()" [disabled]="!selectedVariant()">Agregar al carrito</button>
   } @else {
-    <p>Cargando...</p>
+    <div class="product-detail__loading">
+      <p>Cargando...</p>
+    </div>
   }
 </div>
