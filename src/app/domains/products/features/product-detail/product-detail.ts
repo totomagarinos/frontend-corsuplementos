@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
 import { Variant } from '../../models/variant';
@@ -19,6 +19,8 @@ export class ProductDetail implements OnInit {
   readonly product = signal<Product | null>(null);
   readonly selectedVariant = signal<Variant | null>(null);
   readonly quantity = signal<number>(1);
+
+  readonly outOfStock = computed(() => (this.selectedVariant()?.stock ?? 0) === 0);
 
   ngOnInit(): void {
     this.productService.getProduct(this.slug()).subscribe((data) => {

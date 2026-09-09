@@ -55,8 +55,12 @@
         </div>
       </div>
 
-      <button class="add-to-cart-btn" (click)="addToCart()" [disabled]="!selectedVariant()">
-        Agregar al carrito
+      <button
+        class="add-to-cart-btn"
+        (click)="addToCart()"
+        [disabled]="!selectedVariant() || outOfStock()"
+      >
+        {{ selectedVariant() && outOfStock() ? 'Sin stock' : 'Agregar al carrito' }}
       </button>
     </div>
   } @else {

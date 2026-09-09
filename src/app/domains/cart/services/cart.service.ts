@@ -24,16 +24,18 @@ export class CartService {
   }
 
   addItem(variant: Variant, quantity: number = 1) {
-    this.items.update((current) => {
-      const existing = current.find((item) => item.variant.id === variant.id);
-      if (existing) {
-        const newQuantity = Math.min(existing.quantity + quantity, variant.stock);
-        return current.map((item) =>
-          item.variant.id === variant.id ? { ...item, quantity: newQuantity } : item,
-        );
-      }
-      return [...current, { variant, quantity: Math.min(quantity, variant.stock) }];
-    });
+    if (variant.stock > 0) {
+      this.items.update((current) => {
+        const existing = current.find((item) => item.variant.id === variant.id);
+        if (existing) {
+          const newQuantity = Math.min(existing.quantity + quantity, variant.stock);
+          return current.map((item) =>
+            item.variant.id === variant.id ? { ...item, quantity: newQuantity } : item,
+          );
+        }
+        return [...current, { variant, quantity: Math.min(quantity, variant.stock) }];
+      });
+    }
   }
 
   removeItem(variantId: number): void {
@@ -41,12 +43,12 @@ export class CartService {
   }
 
   updateQuantity(variantId: number, quantity: number): void {
-    if (quantity <= 0) {
-      this.removeItem(variantId);
-      return;
-    }
     this.items.update((current) =>
-      current.map((item) => (item.variant.id === variantId ? { ...item, quantity } : item)),
+      current.map((item) => {
+        if (item.variant.id !== variantId) return item;
+        const capped = Math.min(Math.max(1, quantity), item.variant.stock);
+        return { ...item, quantity: capped };
+      }),
     );
   }
 
