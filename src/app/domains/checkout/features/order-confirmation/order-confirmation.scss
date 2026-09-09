@@ -1,14 +1,15 @@
 @use 'variables' as *;
+@use 'mixins' as *;
 
 .confirmation-container {
   max-width: 600px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+  margin: $space-8 auto;
+  padding: 0 $space-4;
   text-align: center;
 }
 
 .status-badge {
-  margin-bottom: 0.5rem;
+  margin-bottom: $space-3;
 }
 
 .badge-icon {
@@ -17,47 +18,68 @@
 }
 
 h2 {
-  margin: 0 0 0.25rem;
+  margin: 0 0 $space-2;
+  font-family: $font-display;
+  font-weight: $fw-regular; // Anton ya es bold por diseño
+  font-size: $fs-xl;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: $color-white;
 }
 
 .subtitle {
-  color: #666;
-  margin: 0 0 0.5rem;
-  font-size: 0.95rem;
+  margin: 0 0 $space-3;
+  font-family: $font-body;
+  font-size: $fs-base;
+  color: $color-text-muted;
 }
 
 .order-id {
-  color: #666;
-  margin-bottom: 1.5rem;
+  margin-bottom: $space-6;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  color: $color-text-faint;
 }
 
 .order-details,
 .order-items,
 .order-total {
   text-align: left;
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1.25rem;
-  margin-bottom: 1rem;
+  padding: $space-5;
+  margin-bottom: $space-4;
+  background: $color-bg-elevated;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
 
   h3 {
-    margin: 0 0 0.75rem;
-    font-size: 1rem;
+    margin: 0 0 $space-3;
+    font-family: $font-body;
+    font-weight: $fw-bold;
+    font-size: $fs-md;
+    color: $color-white;
   }
 
   p {
-    margin: 0.3rem 0;
-    font-size: 0.9rem;
+    margin: $space-1 0;
+    font-family: $font-body;
+    font-size: $fs-sm;
+    color: $color-text-muted;
+
+    strong {
+      color: $color-white;
+      font-weight: $fw-semibold;
+    }
   }
 }
 
 .item-row {
   display: flex;
-  gap: 0.75rem;
-  padding: 0.4rem 0;
-  border-bottom: 1px solid #f0f0f0;
-  font-size: 0.9rem;
+  gap: $space-3;
+  padding: $space-2 0;
+  border-bottom: 1px solid $color-border;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  color: $color-text-muted;
 
   &:last-child {
     border-bottom: none;
@@ -65,46 +87,53 @@ h2 {
 
   span:first-child {
     flex: 1;
+    color: $color-white;
   }
 
   span:last-child {
-    font-weight: 600;
+    font-weight: $fw-semibold;
     min-width: 80px;
     text-align: right;
+    color: $color-white;
   }
 }
 
 .total-row {
   display: flex;
   justify-content: space-between;
-  padding: 0.3rem 0;
-  font-size: 0.9rem;
+  padding: $space-1 0;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  color: $color-text-muted;
 
   &.final {
-    border-top: 2px solid #333;
-    margin-top: 0.5rem;
-    padding-top: 0.75rem;
-    font-weight: 700;
-    font-size: 1rem;
+    border-top: 1px solid $color-border;
+    margin-top: $space-3;
+    padding-top: $space-3;
+    font-weight: $fw-bold;
+    font-size: $fs-base;
+    color: $color-white;
   }
 }
 
 .whatsapp-info {
   text-align: center;
-  background: #e8f5e9;
-  border: 1px solid #c8e6c9;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
+  padding: $space-4;
+  margin-bottom: $space-5;
+  background: rgba($color-success, 0.08);
+  border: 1px solid rgba($color-success, 0.3);
+  border-radius: $radius-md;
 
   p {
     margin: 0;
-    font-size: 0.9rem;
+    font-family: $font-body;
+    font-size: $fs-sm;
+    color: $color-text-muted;
   }
 
   a {
-    color: #25d366;
-    font-weight: 600;
+    color: $color-success;
+    font-weight: $fw-semibold;
     text-decoration: none;
 
     &:hover {
@@ -114,22 +143,27 @@ h2 {
 }
 
 .pending-info {
-  background: #fff3e0;
-  border-color: #ffe0b2;
+  background: rgba($color-warning, 0.08);
+  border-color: rgba($color-warning, 0.3);
 
   a {
-    color: #e65100;
+    color: $color-warning;
   }
 }
 
 .back-btn {
   display: inline-block;
-  padding: 0.75rem 2rem;
+  padding: $space-3 $space-6;
   background: $color-red;
-  color: #fff;
-  border-radius: 8px;
+  border-radius: $radius-full;
+  color: $color-white;
+  font-family: $font-body;
+  font-weight: $fw-bold;
+  font-size: $fs-sm;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
   text-decoration: none;
-  font-weight: 600;
+  transition: background-color $transition-fast;
 
   &:hover {
     background: $color-red-dark;
@@ -137,14 +171,16 @@ h2 {
 
   &.secondary {
     background: transparent;
-    color: #666;
-    border: 1px solid #ccc;
-    margin-top: 1rem;
+    border: 1px solid $color-border;
+    color: $color-text-muted;
+    margin-top: $space-4;
+    text-transform: none;
+    letter-spacing: normal;
 
     &:hover {
-      background: #f5f5f5;
-      border-color: #999;
-      color: #333;
+      border-color: $color-border-light;
+      color: $color-white;
+      background: rgba($color-white, 0.04);
     }
   }
 }
@@ -152,6 +188,8 @@ h2 {
 .loading,
 .error {
   text-align: center;
-  color: #666;
-  margin-top: 3rem;
+  margin-top: $space-10;
+  font-family: $font-body;
+  font-size: $fs-base;
+  color: $color-text-muted;
 }

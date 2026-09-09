@@ -11,19 +11,34 @@
       @if (order(); as order) {
         <div class="status-badge">
           @switch (uiState()) {
-            @case ('confirmed') { <span class="badge-icon">✅</span> }
-            @case ('pending') { <span class="badge-icon">⏳</span> }
-            @case ('rejected') { <span class="badge-icon">❌</span> }
+            @case ('confirmed') {
+              <span class="badge-icon">✅</span>
+            }
+            @case ('pending') {
+              <span class="badge-icon">⏳</span>
+            }
+            @case ('rejected') {
+              <span class="badge-icon">❌</span>
+            }
           }
         </div>
 
         @switch (uiState()) {
-          @case ('confirmed') {
-            <h2>Pedido confirmado</h2>
-          }
           @case ('pending') {
             <h2>Pago pendiente</h2>
-            <p class="subtitle">Te avisaremos cuando se acredite.</p>
+            @if (order.payment_method === 'efectivo') {
+              <p class="subtitle">Te contactamos por WhatsApp para coordinar la entrega.</p>
+            } @else {
+              <p class="subtitle">Te avisaremos cuando se acredite el pago.</p>
+            }
+          }
+          @case ('confirmed') {
+            <h2>Pedido confirmado</h2>
+            @if (order.payment_method === 'efectivo') {
+              <p class="subtitle">Te contactamos por WhatsApp para coordinar la entrega.</p>
+            } @else {
+              <p class="subtitle">Tu pago fue acreditado.</p>
+            }
           }
           @case ('rejected') {
             <h2>Pago rechazado</h2>
@@ -66,13 +81,27 @@
         @switch (uiState()) {
           @case ('confirmed') {
             <div class="whatsapp-info">
-              <p>Envianos el comprobante de pago al <a href="https://wa.link/8nneyn" target="_blank">WhatsApp</a> para coordinar la entrega.</p>
+              @if (order.payment_method === 'efectivo') {
+                <p>Coordinamos la entrega por WhatsApp</p>
+              } @else {
+                <p>
+                  Envianos el comprobante de pago al
+                  <a href="https://wa.link/8nneyn" target="_blank">WhatsApp</a> para coordinar la
+                  entrega.
+                </p>
+              }
             </div>
           }
           @case ('pending') {
-            <div class="whatsapp-info pending-info">
-              <p>Coordinamos la entrega por <a href="https://wa.link/8nneyn" target="_blank">WhatsApp</a> una vez confirmado el pago.</p>
-            </div>
+            @if (order.payment_method === 'mercado_pago') {
+              <div class="whatsapp-info pending-info">
+                <p>
+                  Coordinamos la entrega por
+                  <a href="https://wa.link/8nneyn" target="_blank">WhatsApp</a> una vez confirmado
+                  el pago.
+                </p>
+              </div>
+            }
           }
           @case ('rejected') {
             <a class="back-btn" routerLink="/cart">Volver al carrito</a>
