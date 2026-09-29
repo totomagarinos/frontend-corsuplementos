@@ -53,7 +53,9 @@
           <p><strong>Nombre:</strong> {{ order.customer_name }}</p>
           <p><strong>Email:</strong> {{ order.customer_email }}</p>
           <p><strong>Teléfono:</strong> {{ order.customer_phone }}</p>
-          <p><strong>Dirección:</strong> {{ order.shipping_address }}</p>
+          @if (order.shipping_address != '') {
+            <p><strong>Dirección:</strong> {{ order.shipping_address }}</p>
+          }
         </div>
 
         <div class="order-items">
@@ -69,11 +71,7 @@
 
         <div class="order-total">
           <div class="total-row">
-            <span>Subtotal</span>
-            <span>{{ order.subtotal | currency: 'ARS' : 'symbol' : '1.0-0' }}</span>
-          </div>
-          <div class="total-row final">
-            <span>Total</span>
+            <h3>Total</h3>
             <span>{{ order.total | currency: 'ARS' : 'symbol' : '1.0-0' }}</span>
           </div>
         </div>
