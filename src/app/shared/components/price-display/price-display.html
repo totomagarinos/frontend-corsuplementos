@@ -1,0 +1,12 @@
+<div class="product-price-section">
+  @if (authService.currentUser()?.is_vip && vipPrice()) {
+    <div class="vip-pricing">
+      <span class="current-price current-price--vip">${{ vipPrice() }}</span>
+      <span class="old-price">${{ price() }}</span>
+    </div>
+  } @else {
+    <div class="normal-pricing">
+      <span class="current-price">${{ price() }}</span>
+    </div>
+  }
+</div>

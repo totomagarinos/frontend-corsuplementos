@@ -4,10 +4,11 @@ import { RouterLink } from '@angular/router';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { delay, of, switchMap } from 'rxjs';
 import { SearchService } from '@/app/shared/services/search.service';
+import { PriceDisplay } from '@/app/shared/components/price-display/price-display';
 
 @Component({
   selector: 'app-product-list',
-  imports: [RouterLink],
+  imports: [RouterLink, PriceDisplay],
   templateUrl: './product-list.html',
   styleUrl: './product-list.scss',
 })

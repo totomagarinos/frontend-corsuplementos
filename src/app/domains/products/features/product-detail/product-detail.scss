@@ -25,6 +25,21 @@
   }
 }
 
+.back-link {
+  display: inline-block;
+  grid-column: 1 / -1;
+  margin-bottom: $space-3;
+  color: $color-text-muted;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-white;
+  }
+}
+
 .product-detail__gallery {
   display: flex;
   align-items: center;

@@ -17,7 +17,7 @@
             <span class="cart-item__name">{{ item.variant.product_name }}</span>
             <span class="cart-item__flavor">{{ item.variant.flavor }}</span>
             <span class="cart-item__size">Peso: {{ item.variant.size }}</span>
-            <span class="cart-item__unit-price">{{ item.variant.price | currency }} c/u</span>
+            <app-price-display [price]="item.variant.price" [vipPrice]="item.variant.vip_price" />
           </div>
 
           <div class="cart-item__actions">

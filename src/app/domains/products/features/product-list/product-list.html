@@ -15,7 +15,11 @@
         </div>
 
         <div class="product-card__footer">
-          <span class="product-card__price">${{ product.base_price }}</span>
+          <app-price-display
+            style="--price-font-size: 1.2rem; --price-font-size-old: 1rem"
+            [price]="product.price"
+            [vipPrice]="product.vip_price"
+          />
         </div>
       </a>
     } @empty {

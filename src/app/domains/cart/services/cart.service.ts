@@ -1,25 +1,39 @@
-import { computed, effect, Service, signal } from '@angular/core';
+import { computed, effect, inject, Service, signal } from '@angular/core';
 import { CartItem } from '../models/cart-item';
 import { Variant } from '../../products/models/variant';
+import { LocalKeys, LocalManagerService } from '@/app/shared/services/local-manager.service';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Service()
 export class CartService {
+  localManager = inject(LocalManagerService);
+  authService = inject(AuthService);
+
   private readonly items = signal<CartItem[]>([]);
 
   readonly cartItems = this.items.asReadonly();
   readonly itemsCount = computed(() => this.items().reduce((acc, item) => acc + item.quantity, 0));
-  readonly subtotal = computed(() =>
-    this.items().reduce((acc, item) => acc + Number(item.variant.price) * item.quantity, 0),
-  );
+
+  readonly subtotal = computed(() => {
+    const user = this.authService.currentUser();
+    const isVip = user?.is_vip ?? false;
+
+    return this.items().reduce((acc, item) => {
+      const activePrice =
+        isVip && item.variant.vip_price ? item.variant.vip_price : item.variant.price;
+
+      return acc + Number(activePrice) * item.quantity;
+    }, 0);
+  });
 
   constructor() {
-    const saved = localStorage.getItem('cart');
+    const saved = this.localManager.getData<CartItem[]>(LocalKeys.CART);
     if (saved) {
-      this.items.set(JSON.parse(saved) as CartItem[]);
+      this.items.set(saved);
     }
 
     effect(() => {
-      localStorage.setItem('cart', JSON.stringify(this.items()));
+      this.localManager.setData(LocalKeys.CART, this.items());
     });
   }
 

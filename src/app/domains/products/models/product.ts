@@ -8,7 +8,8 @@ export interface Product {
   description: string;
   category: string;
   category_display: string;
-  base_price: string;
+  price: string;
+  vip_price: string;
   image: string;
   variants: Variant[];
 }

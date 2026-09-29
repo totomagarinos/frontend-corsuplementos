@@ -5,5 +5,6 @@ export interface Variant {
   flavor: string;
   product_name: string;
   price: string;
+  vip_price: string;
   stock: number;
 }

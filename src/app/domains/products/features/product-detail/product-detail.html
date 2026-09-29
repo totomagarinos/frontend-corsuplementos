@@ -1,4 +1,6 @@
 <div class="product-detail">
+  <a class="back-link" routerLink="/">← Volver a la tienda</a>
+
   @if (product(); as product) {
     <div class="product-detail__gallery">
       <img [src]="product.image" [alt]="product.name" />
@@ -7,7 +9,11 @@
     <div class="product-detail__info">
       <span class="product-detail__brand">{{ product.brand }}</span>
       <h1 class="product-detail__name">{{ product.name }}</h1>
-      <span class="product-detail__price">${{ product.base_price }}</span>
+      <app-price-display
+        style="--price-font-size: 2rem; --price-font-size-old: 1.1rem"
+        [price]="product.price"
+        [vipPrice]="product.vip_price"
+      />
       <p class="product-detail__description">{{ product.description }}</p>
 
       <div class="variant-selector">

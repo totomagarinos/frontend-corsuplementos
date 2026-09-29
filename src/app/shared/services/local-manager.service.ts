@@ -4,6 +4,7 @@ export enum LocalKeys {
   ACCESS_TOKEN = 'token',
   REFRESH_TOKEN = 'refresh',
   USER = 'user',
+  CART = 'cart',
 }
 
 @Service()

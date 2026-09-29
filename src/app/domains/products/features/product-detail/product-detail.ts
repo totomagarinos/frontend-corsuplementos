@@ -3,10 +3,12 @@ import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
 import { Variant } from '../../models/variant';
 import { CartService } from '@/app/domains/cart/services/cart.service';
+import { RouterLink } from '@angular/router';
+import { PriceDisplay } from '@/app/shared/components/price-display/price-display';
 
 @Component({
   selector: 'app-product-detail',
-  imports: [],
+  imports: [RouterLink, PriceDisplay],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.scss',
 })

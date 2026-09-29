@@ -1,0 +1,33 @@
+@use 'variables' as *;
+
+:host {
+  display: inline-flex;
+}
+
+.product-price-section {
+  font-family: $font-body;
+}
+
+.vip-pricing,
+.normal-pricing {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.current-price {
+  font-size: var(--price-font-size, #{$fs-md});
+  font-weight: $fw-bold;
+  color: $color-white;
+
+  &--vip {
+    color: $color-red;
+  }
+}
+
+.old-price {
+  font-size: var(--price-font-size-old, #{$fs-sm});
+  color: $color-text-faint;
+  text-decoration: line-through;
+}
