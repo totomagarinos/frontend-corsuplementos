@@ -8,10 +8,14 @@ import { CurrencyPipe } from '@angular/common';
 import { ShippingOption, ShippingType } from '../../models/shipping-option';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PaymentMethod } from '../../models/order';
+import { useFormValidator } from '@/app/shared/utils/form-validator';
+import { FieldError } from '@/app/shared/components/field-error/field-error';
+import { PriceDisplay } from '@/app/shared/components/price-display/price-display';
+import { AuthService } from '@/app/domains/auth/services/auth.service';
 
 @Component({
   selector: 'app-checkout-form',
-  imports: [RouterLink, CurrencyPipe],
+  imports: [RouterLink, CurrencyPipe, FieldError, PriceDisplay],
   templateUrl: './checkout-form.html',
   styleUrl: './checkout-form.scss',
 })
@@ -19,6 +23,7 @@ export class CheckoutForm {
   readonly cartService = inject(CartService);
   readonly shippingService = inject(ShippingService);
   readonly orderService = inject(OrderService);
+  readonly authService = inject(AuthService);
   readonly router = inject(Router);
 
   readonly shippingOptions = toSignal(this.shippingService.getShippingOptions(), {
@@ -46,22 +51,16 @@ export class CheckoutForm {
     () => this.selectedShipping()?.type === ShippingType.DELIVERY,
   );
 
+  readonly validationPayload = computed(() => ({
+    ...this.formData(),
+    requiresAddress: this.requiresAddress(),
+  }));
+
+  readonly formValidator = useFormValidator(CheckoutSchema, this.validationPayload);
+
   readonly total = computed(() => {
     const shippingCost = Number(this.selectedShipping()?.price) || 0;
     return this.cartService.subtotal() + shippingCost;
-  });
-
-  readonly validation = computed(() => {
-    const base = safeParse(CheckoutSchema, this.formData());
-    if (!base.success) return { success: false as const };
-
-    if (this.requiresAddress()) {
-      const { address, department } = this.formData();
-      if (!address || address.trim().length < 8) return { success: false as const };
-      if (!department) return { success: false as const };
-    }
-
-    return { success: true as const };
   });
 
   selectShipping(option: ShippingOption) {
@@ -80,8 +79,9 @@ export class CheckoutForm {
   }
 
   submit(): void {
-    if (!this.validation().success) {
-      this.error.set('Por favor, revisa los campos del formulario.');
+    this.formValidator.submitAttempted.set(true);
+
+    if (!this.formValidator.validation().success) {
       return;
     }
 

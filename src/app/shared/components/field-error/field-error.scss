@@ -1,0 +1,8 @@
+@use 'variables' as *;
+
+.field-error-text {
+  color: $color-danger;
+  font-size: $fs-xs;
+  margin-top: $space-1;
+  display: block;
+}

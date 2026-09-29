@@ -1,14 +1,15 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { LoginFormData, LoginSchema } from './login.schema';
-import { safeParse } from 'valibot';
 import { AuthService } from '../../services/auth.service';
 import { firstValueFrom } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { useFormValidator } from '@/app/shared/utils/form-validator';
+import { FieldError } from '@/app/shared/components/field-error/field-error';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink],
+  imports: [RouterLink, FieldError],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -20,7 +21,7 @@ export class Login {
   readonly loading = signal(false);
   readonly errorMessage = signal<string | null>(null);
 
-  readonly validation = computed(() => safeParse(LoginSchema, this.loginForm()));
+  readonly formValidator = useFormValidator(LoginSchema, this.loginForm);
 
   updateField(field: keyof LoginFormData, value: string) {
     this.loginForm.update((current) => ({
@@ -31,9 +32,9 @@ export class Login {
 
   async onSubmit(event: Event) {
     event.preventDefault();
+    this.formValidator.submitAttempted.set(true);
 
-    if (!this.validation().success) {
-      this.errorMessage.set('Por favor, revisa los campos del formulario.');
+    if (!this.formValidator.validation().success) {
       return;
     }
 

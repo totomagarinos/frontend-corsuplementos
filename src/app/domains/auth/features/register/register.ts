@@ -1,14 +1,15 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RegisterFormData, RegisterSchema } from './register.schema';
-import { safeParse } from 'valibot';
 import { AuthService } from '../../services/auth.service';
 import { firstValueFrom } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { useFormValidator } from '@/app/shared/utils/form-validator';
+import { FieldError } from '@/app/shared/components/field-error/field-error';
 
 @Component({
   selector: 'app-register',
-  imports: [RouterLink],
+  imports: [RouterLink, FieldError],
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
@@ -20,7 +21,7 @@ export class Register {
   readonly loading = signal(false);
   readonly errorMessage = signal<string | null>(null);
 
-  readonly validation = computed(() => safeParse(RegisterSchema, this.registerForm()));
+  readonly formValidator = useFormValidator(RegisterSchema, this.registerForm);
 
   updateField(field: keyof RegisterFormData, value: string) {
     this.registerForm.update((current) => ({
@@ -31,9 +32,9 @@ export class Register {
 
   async onSubmit(event: Event) {
     event.preventDefault();
+    this.formValidator.submitAttempted.set(true);
 
-    if (!this.validation().success) {
-      this.errorMessage.set('Por favor, revisa los campos del formulario.');
+    if (!this.formValidator.validation().success) {
       return;
     }
 

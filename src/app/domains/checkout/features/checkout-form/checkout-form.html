@@ -18,9 +18,10 @@
               {{ item.variant.size }}</span
             >
             <span class="item-qty">x{{ item.quantity }}</span>
-            <span class="item-price">{{
-              item.variant.price | currency: 'ARS' : 'symbol' : '1.0-0'
-            }}</span>
+            <span class="item-price">
+              <app-price-display [price]="item.variant.price" [vipPrice]="item.variant.vip_price">
+              </app-price-display>
+            </span>
           </div>
         }
       </section>
@@ -38,6 +39,11 @@
             required
             placeholder="Ej: Juan Pérez"
           />
+
+          <app-field-error
+            [show]="formValidator.submitAttempted()"
+            [errorList]="formValidator.fieldErrors()['name']"
+          />
         </div>
 
         <div class="form-group">
@@ -49,6 +55,11 @@
             type="email"
             required
             placeholder="ej: juan@gmail.com"
+          />
+
+          <app-field-error
+            [show]="formValidator.submitAttempted()"
+            [errorList]="formValidator.fieldErrors()['email']"
           />
         </div>
 
@@ -62,6 +73,11 @@
             required
             placeholder="Ej: 2645123456"
           />
+
+          <app-field-error
+            [show]="formValidator.submitAttempted()"
+            [errorList]="formValidator.fieldErrors()['phone']"
+          />
         </div>
 
         @if (requiresAddress()) {
@@ -74,6 +90,11 @@
               type="text"
               required
               placeholder="Calle y número"
+            />
+
+            <app-field-error
+              [show]="formValidator.submitAttempted()"
+              [errorList]="formValidator.fieldErrors()['address']"
             />
           </div>
 
@@ -90,6 +111,11 @@
                 <option [value]="dept">{{ dept }}</option>
               }
             </select>
+
+            <app-field-error
+              [show]="formValidator.submitAttempted()"
+              [errorList]="formValidator.fieldErrors()['department']"
+            />
           </div>
 
           <p class="delivery-note">

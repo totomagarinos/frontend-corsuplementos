@@ -18,6 +18,11 @@
           placeholder="ej: juan@mail.com"
           autocomplete="email"
         />
+
+        <app-field-error
+          [show]="formValidator.submitAttempted()"
+          [errorList]="formValidator.fieldErrors()['email']"
+        />
       </div>
 
       <div class="form-group">
@@ -30,6 +35,11 @@
           required
           placeholder="Tu contraseña"
           autocomplete="current-password"
+        />
+
+        <app-field-error
+          [show]="formValidator.submitAttempted()"
+          [errorList]="formValidator.fieldErrors()['password']"
         />
       </div>
 
