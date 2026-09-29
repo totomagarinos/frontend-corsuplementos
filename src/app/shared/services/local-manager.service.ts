@@ -3,6 +3,7 @@ import { Service } from '@angular/core';
 export enum LocalKeys {
   ACCESS_TOKEN = 'token',
   REFRESH_TOKEN = 'refresh',
+  USER = 'user',
 }
 
 @Service()

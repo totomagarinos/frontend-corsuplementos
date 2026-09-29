@@ -1,6 +1,6 @@
 import { LocalKeys, LocalManagerService } from '@/app/shared/services/local-manager.service';
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { inject, Injector } from '@angular/core';
 import { BehaviorSubject, catchError, filter, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
@@ -9,7 +9,7 @@ let refreshSubject: BehaviorSubject<string | null> | null = null;
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const localManager = inject(LocalManagerService);
-  const authService = inject(AuthService);
+  const injector = inject(Injector);
 
   const token = localManager.getData<string>(LocalKeys.ACCESS_TOKEN);
 
@@ -22,6 +22,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401 && !req.url.includes('refresh')) {
+        const authService = injector.get(AuthService);
+
         if (!isRefreshing) {
           isRefreshing = true;
           refreshSubject = new BehaviorSubject<string | null>(null);

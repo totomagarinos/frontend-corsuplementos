@@ -2,7 +2,7 @@ import { LocalKeys, LocalManagerService } from '@/app/shared/services/local-mana
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Service, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth, AuthData, LoginResponse, TokenContainer } from '../models/auth.model';
+import { Auth, AuthData, LoginResponse, TokenContainer, User } from '../models/auth';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { authAdapter } from '../adapters/auth.adapter';
 
@@ -15,6 +15,16 @@ export class AuthService {
 
   private readonly accessToken = signal<string | null>(this.loadInitialToken());
   readonly isAuthenticated = computed(() => this.accessToken() !== null);
+  readonly currentUser = signal<User | null>(null);
+
+  constructor() {
+    const savedUser = this.localManager.getData<User>(LocalKeys.USER);
+    if (savedUser) {
+      this.currentUser.set(savedUser);
+
+      this.refreshUserProfile();
+    }
+  }
 
   private loadInitialToken(): string | null {
     return this.localManager.getData<string>(LocalKeys.ACCESS_TOKEN);
@@ -33,6 +43,9 @@ export class AuthService {
       map(authAdapter),
       tap((auth) => {
         this.setTokens(auth.access, auth.refresh);
+
+        this.currentUser.set(auth.user);
+        this.localManager.setData(LocalKeys.USER, auth.user);
       }),
     );
   }
@@ -42,6 +55,9 @@ export class AuthService {
       map(authAdapter),
       tap((auth) => {
         this.setTokens(auth.access, auth.refresh);
+
+        this.currentUser.set(auth.user);
+        this.localManager.setData(LocalKeys.USER, auth.user);
       }),
     );
   }
@@ -71,6 +87,24 @@ export class AuthService {
   logout() {
     this.localManager.removeData(LocalKeys.ACCESS_TOKEN);
     this.localManager.removeData(LocalKeys.REFRESH_TOKEN);
+    this.localManager.removeData(LocalKeys.USER);
+
+    this.currentUser.set(null);
     this.accessToken.set(null);
+  }
+
+  refreshUserProfile(): void {
+    if (!this.localManager.getData(LocalKeys.ACCESS_TOKEN)) {
+      return;
+    }
+
+    this.http.get<User>(`${this.baseUrl}/me/`).subscribe({
+      next: (freshUser) => {
+        this.currentUser.set(freshUser);
+        this.localManager.setData(LocalKeys.USER, freshUser);
+      },
+
+      error: () => {},
+    });
   }
 }
