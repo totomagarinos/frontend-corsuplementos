@@ -12,7 +12,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: $space-3;
-  padding: $space-3 $space-4;
+  padding: $space-3 $space-6;
   background-color: rgba($color-bg, 0.92);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -23,7 +23,11 @@
     justify-content: space-between;
     gap: $space-6;
     height: $header-height;
-    padding: 0 $space-6;
+    padding: 0 $space-10;
+  }
+
+  @include respond-to('lg') {
+    padding: 0 12rem;
   }
 }
 

@@ -4,6 +4,15 @@
 .products-page {
   min-height: calc(100vh - #{$header-height});
   background: $color-bg;
+  padding: 0 $space-6;
+
+  @include respond-to('md') {
+    padding: 0 $space-10;
+  }
+
+  @include respond-to('xl') {
+    padding: 0 12rem;
+  }
 }
 
 .products-page__title {
@@ -17,7 +26,6 @@
 
   @include respond-to('md') {
     font-size: $fs-2xl;
-    margin: $space-8 $space-6 0;
   }
 }
 
@@ -26,17 +34,21 @@
 // -----------------------------
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1;
   gap: $space-3;
   padding: $space-4;
+
+  @include respond-to('sm') {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-5;
+  }
 
   @include respond-to('md') {
     grid-template-columns: repeat(3, 1fr);
     gap: $space-5;
-    padding: $space-6;
   }
 
-  @include respond-to('lg') {
+  @include respond-to('xl') {
     grid-template-columns: repeat(4, 1fr);
   }
 }
