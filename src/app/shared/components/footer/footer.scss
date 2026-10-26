@@ -1,0 +1,146 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.footer {
+  background: $color-bg;
+  border-top: 1px solid $color-border;
+  color: $color-text-muted;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  margin-top: auto;
+}
+
+.footer__container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-6;
+  padding: $space-8 $space-4;
+  max-width: $container-max;
+  margin: 0 auto;
+
+  @include respond-to('md') {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: $space-8;
+    padding: $space-10 $space-6;
+  }
+
+  @include respond-to('lg') {
+    padding: $space-12 $space-8;
+  }
+}
+
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+
+  @include respond-to('md') {
+    grid-column: 1;
+  }
+}
+
+.footer__logo {
+  width: 120px;
+  height: auto;
+  border-radius: 50%;
+
+  @include respond-to('md') {
+    width: 140px;
+  }
+}
+
+.footer__nav {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.footer__title {
+  margin: 0;
+  font-family: $font-display;
+  font-size: $fs-xs;
+  font-weight: $fw-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $color-white;
+}
+
+.footer__links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.footer__link {
+  color: $color-text-muted;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-red;
+  }
+}
+
+.footer__social {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.footer__social-links {
+  display: flex;
+  gap: $space-3;
+}
+
+.footer__social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-full;
+  background: $color-bg-elevated;
+  border: 1px solid $color-border;
+  color: $color-text-muted;
+  transition:
+    background $transition-fast,
+    border-color $transition-fast,
+    color $transition-fast,
+    transform $transition-fast;
+
+  &:hover {
+    background: $color-red;
+    border-color: $color-red;
+    color: $color-white;
+    transform: translateY(-2px);
+  }
+}
+
+.footer__icon {
+  width: 20px;
+  height: 20px;
+}
+
+.footer__bottom {
+  text-align: center;
+  padding: $space-4;
+  border-top: 1px solid $color-border;
+  background: $color-bg-elevated;
+
+  @include respond-to('md') {
+    padding: $space-4 $space-6;
+  }
+
+  @include respond-to('lg') {
+    padding: $space-4 $space-8;
+  }
+}
+
+.footer__copyright {
+  margin: 0;
+  font-size: $fs-xs;
+  color: $color-text-faint;
+}

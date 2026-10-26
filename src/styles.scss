@@ -20,6 +20,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+// Shell de la app: columna flex que empuja el footer al fondo en páginas
+// cortas. Va global a propósito: app.scss está scoped al componente App.
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 // Evita que <img> quede con espacio fantasma abajo (por line-height inline)
 img {
   display: block;
