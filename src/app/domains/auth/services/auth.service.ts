@@ -2,7 +2,7 @@ import { LocalKeys, LocalManagerService } from '@/app/shared/services/local-mana
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Service, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth, AuthData, LoginResponse, TokenContainer, User } from '../models/auth';
+import { Auth, LoginData, LoginResponse, RegisterData, TokenContainer, User } from '../models/auth';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { authAdapter } from '../adapters/auth.adapter';
 
@@ -38,7 +38,7 @@ export class AuthService {
     }
   }
 
-  login(data: AuthData): Observable<Auth> {
+  login(data: LoginData): Observable<Auth> {
     return this.http.post<LoginResponse>(`${this.baseUrl}/login/`, data).pipe(
       map(authAdapter),
       tap((auth) => {
@@ -50,7 +50,7 @@ export class AuthService {
     );
   }
 
-  register(data: AuthData): Observable<Auth> {
+  register(data: RegisterData): Observable<Auth> {
     return this.http.post<LoginResponse>(`${this.baseUrl}/register/`, data).pipe(
       map(authAdapter),
       tap((auth) => {

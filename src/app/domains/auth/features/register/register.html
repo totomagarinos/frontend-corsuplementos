@@ -8,6 +8,24 @@
 
     <form class="register-form" (submit)="onSubmit($event)">
       <div class="form-group">
+        <label for="first_name">Nombre</label>
+        <input
+          id="first_name"
+          [value]="registerForm().first_name"
+          (input)="updateField('first_name', $any($event.target).value)"
+          type="text"
+          required
+          placeholder="Juan"
+          autocomplete="given-name"
+        />
+
+        <app-field-error
+          [show]="formValidator.submitAttempted()"
+          [errorList]="formValidator.fieldErrors()['first_name']"
+        />
+      </div>
+
+      <div class="form-group">
         <label for="email">Email</label>
         <input
           id="email"

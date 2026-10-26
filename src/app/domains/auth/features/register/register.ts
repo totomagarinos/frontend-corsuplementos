@@ -17,7 +17,7 @@ export class Register {
   readonly authService = inject(AuthService);
   readonly router = inject(Router);
 
-  readonly registerForm = signal<RegisterFormData>({ email: '', password: '' });
+  readonly registerForm = signal<RegisterFormData>({ first_name: '', email: '', password: '' });
   readonly loading = signal(false);
   readonly errorMessage = signal<string | null>(null);
 
@@ -39,6 +39,7 @@ export class Register {
     }
 
     const payload = {
+      first_name: this.registerForm().first_name,
       email: this.registerForm().email,
       password: this.registerForm().password,
     };
