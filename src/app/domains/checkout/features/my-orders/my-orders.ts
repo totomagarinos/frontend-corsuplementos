@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, resource } from '@angular/core';
 import { Order, OrderStatus } from '../../models/order';
 import { OrderService } from '../../services';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { firstValueFrom } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 
@@ -14,7 +14,13 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 export class MyOrders {
   orderService = inject(OrderService);
 
-  orders = toSignal(this.orderService.getMyOrders(), { initialValue: [] });
+  // `resource` expone loading, error y valor por separado, así el template
+  // puede distinguir "todavía cargando" de "no hay pedidos".
+  readonly orders = resource({
+    loader: () => firstValueFrom(this.orderService.getMyOrders()),
+  });
+
+  readonly orderList = computed(() => this.orders.value() ?? []);
 
   getStatusLabel(status: OrderStatus): string {
     const labels: Record<OrderStatus, string> = {

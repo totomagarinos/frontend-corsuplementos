@@ -45,6 +45,15 @@
   color: $color-red;
 }
 
+.my-orders__loading {
+  margin: 0;
+  padding: $space-12 $space-4;
+  text-align: center;
+  font-family: $font-body;
+  font-size: $fs-base;
+  color: $color-text-muted;
+}
+
 .empty-orders {
   display: flex;
   flex-direction: column;

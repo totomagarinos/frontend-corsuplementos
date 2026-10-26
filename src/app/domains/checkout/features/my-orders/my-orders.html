@@ -2,20 +2,27 @@
   <header class="my-orders__header">
     <h1 class="my-orders__title">
       Mis pedidos
-      @if (orders().length > 0) {
-        <span class="my-orders__count">({{ orders().length }})</span>
+      @if (orderList().length > 0) {
+        <span class="my-orders__count">({{ orderList().length }})</span>
       }
     </h1>
   </header>
 
-  @if (orders().length === 0) {
+  @if (orders.isLoading()) {
+    <p class="my-orders__loading">Cargando pedidos...</p>
+  } @else if (orders.error()) {
+    <div class="empty-orders">
+      <p class="empty-orders__text">No pudimos cargar tus pedidos.</p>
+      <a class="empty-orders__btn" routerLink="/">Ir a la tienda</a>
+    </div>
+  } @else if (orderList().length === 0) {
     <div class="empty-orders">
       <p class="empty-orders__text">No tenés pedidos aún</p>
       <a class="empty-orders__btn" routerLink="/">Ir a la tienda</a>
     </div>
   } @else {
     <div class="orders-list">
-      @for (order of orders(); track order.id) {
+      @for (order of orderList(); track order.id) {
         <article class="order-card">
           <header class="order-card__header">
             <div class="order-card__id">
