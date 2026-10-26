@@ -1,0 +1,72 @@
+<div class="my-orders">
+  <header class="my-orders__header">
+    <h1 class="my-orders__title">
+      Mis pedidos
+      @if (orders().length > 0) {
+        <span class="my-orders__count">({{ orders().length }})</span>
+      }
+    </h1>
+  </header>
+
+  @if (orders().length === 0) {
+    <div class="empty-orders">
+      <p class="empty-orders__text">No tenés pedidos aún</p>
+      <a class="empty-orders__btn" routerLink="/">Ir a la tienda</a>
+    </div>
+  } @else {
+    <div class="orders-list">
+      @for (order of orders(); track order.id) {
+        <article class="order-card">
+          <header class="order-card__header">
+            <div class="order-card__id">
+              <span class="order-card__label">Pedido</span>
+              <span class="order-card__number">#{{ order.id }}</span>
+            </div>
+            <div class="order-card__date">
+              {{ order.created_at | date: 'dd/MM/yyyy HH:mm' }}
+            </div>
+          </header>
+
+          <div class="order-card__body">
+            <div class="order-card__status">
+              <span class="status-badge" [class]="'status-badge--' + order.status">
+                {{ getStatusLabel(order.status) }}
+              </span>
+            </div>
+
+            <div class="order-card__summary">
+              @if (order.items.length > 0) {
+                <div class="order-card__items-preview">
+                  <span class="order-card__items-label">Productos:</span>
+                  <span class="order-card__items-list">
+                    @for (item of order.items.slice(0, 3); track $index) {
+                      <span class="order-card__item-name">{{ item.variant_name }}</span>
+                      @if ($index < order.items.slice(0, 3).length - 1) {
+                        <span>, </span>
+                      }
+                    }
+                    @if (order.items.length > 3) {
+                      <span class="order-card__more">y {{ order.items.length - 3 }} más</span>
+                    }
+                  </span>
+                </div>
+              }
+            </div>
+          </div>
+
+          <footer class="order-card__footer">
+            <div class="order-card__total">
+              <span class="order-card__total-label">Total</span>
+              <span class="order-card__total-amount">{{
+                order.total | currency: 'ARS' : 'symbol' : '1.0-0'
+              }}</span>
+            </div>
+            <a class="order-card__detail" [routerLink]="['/order', order.id, 'confirmation']">
+              Ver detalle
+            </a>
+          </footer>
+        </article>
+      }
+    </div>
+  }
+</div>

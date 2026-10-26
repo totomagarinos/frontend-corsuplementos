@@ -1,0 +1,336 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.my-orders {
+  max-width: $container-max;
+  margin: 0 auto;
+  padding: $space-6 $space-4;
+
+  @include respond-to('md') {
+    padding: $space-8 $space-6;
+  }
+
+  @include respond-to('lg') {
+    padding: $space-10 $space-8;
+  }
+}
+
+.my-orders__header {
+  margin-bottom: $space-6;
+
+  @include respond-to('md') {
+    margin-bottom: $space-8;
+  }
+}
+
+.my-orders__title {
+  margin: 0;
+  font-family: $font-display;
+  font-weight: $fw-regular;
+  font-size: $fs-xl;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: $color-white;
+
+  @include respond-to('md') {
+    font-size: $fs-2xl;
+  }
+}
+
+.my-orders__count {
+  margin-left: $space-2;
+  font-family: $font-body;
+  font-weight: $fw-bold;
+  font-size: $fs-base;
+  color: $color-red;
+}
+
+.empty-orders {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $space-12 $space-4;
+  text-align: center;
+  background: $color-bg-elevated;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+
+  @include respond-to('md') {
+    padding: $space-12 $space-8;
+  }
+}
+
+.empty-orders__text {
+  margin: 0 0 $space-4;
+  font-family: $font-body;
+  font-size: $fs-base;
+  color: $color-text-muted;
+}
+
+.empty-orders__btn {
+  display: inline-block;
+  padding: $space-3 $space-6;
+  background: $color-red;
+  border-radius: $radius-full;
+  color: $color-white;
+  font-family: $font-body;
+  font-weight: $fw-bold;
+  font-size: $fs-sm;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background: $color-red-dark;
+  }
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+
+  @include respond-to('md') {
+    gap: $space-5;
+  }
+}
+
+.order-card {
+  display: flex;
+  flex-direction: column;
+  background: $color-bg-elevated;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  transition:
+    border-color $transition-base,
+    box-shadow $transition-base;
+
+  &:hover {
+    border-color: $color-red;
+    box-shadow: $shadow-md;
+  }
+}
+
+.order-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  padding: $space-4;
+  background: $color-bg;
+  border-bottom: 1px solid $color-border;
+
+  @include respond-to('md') {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.order-card__id {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  @include respond-to('md') {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.order-card__label {
+  font-family: $font-body;
+  font-size: $fs-xs;
+  font-weight: $fw-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $color-text-faint;
+}
+
+.order-card__number {
+  font-family: $font-display;
+  font-size: $fs-md;
+  font-weight: $fw-regular;
+  color: $color-white;
+
+  @include respond-to('md') {
+    margin-left: $space-2;
+  }
+}
+
+.order-card__date {
+  font-family: $font-body;
+  font-size: $fs-xs;
+  color: $color-text-muted;
+  white-space: nowrap;
+}
+
+.order-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  padding: $space-4;
+
+  @include respond-to('md') {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: $space-4;
+  }
+}
+
+.order-card__status {
+  flex-shrink: 0;
+}
+
+.order-card__items-preview {
+  flex: 1;
+  min-width: 0;
+}
+
+.order-card__items-label {
+  display: block;
+  margin-bottom: $space-1;
+  font-family: $font-body;
+  font-size: $fs-xs;
+  font-weight: $fw-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $color-text-faint;
+}
+
+.order-card__items-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-1;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  color: $color-text-muted;
+}
+
+.order-card__item-name {
+  color: $color-white;
+}
+
+.order-card__more {
+  font-size: $fs-xs;
+  color: $color-text-faint;
+}
+
+.order-card__footer {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  padding: $space-3 $space-4 $space-4;
+  background: $color-bg;
+  border-top: 1px solid $color-border;
+
+  @include respond-to('md') {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: $space-3 $space-4;
+  }
+}
+
+.order-card__total {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  @include respond-to('md') {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.order-card__total-label {
+  font-family: $font-body;
+  font-size: $fs-xs;
+  font-weight: $fw-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $color-text-faint;
+}
+
+.order-card__total-amount {
+  font-family: $font-display;
+  font-size: $fs-lg;
+  font-weight: $fw-regular;
+  color: $color-white;
+  letter-spacing: 0.02em;
+}
+
+.order-card__detail {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-2 $space-4;
+  background: transparent;
+  border: 1px solid $color-border;
+  border-radius: $radius-full;
+  color: $color-text-muted;
+  font-family: $font-body;
+  font-weight: $fw-medium;
+  font-size: $fs-sm;
+  text-decoration: none;
+  transition:
+    border-color $transition-fast,
+    color $transition-fast,
+    background $transition-fast;
+
+  @include respond-to('md') {
+    padding: $space-2 $space-6;
+  }
+
+  &:hover {
+    border-color: $color-red;
+    color: $color-red;
+    background: rgba($color-red, 0.08);
+  }
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: $radius-full;
+  font-family: $font-body;
+  font-size: $fs-xs;
+  font-weight: $fw-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.status-badge--pending {
+  background: rgba($color-warning, 0.12);
+  color: $color-warning;
+  border: 1px solid rgba($color-warning, 0.3);
+}
+
+.status-badge--confirmed {
+  background: rgba($color-success, 0.12);
+  color: $color-success;
+  border: 1px solid rgba($color-success, 0.3);
+}
+
+.status-badge--cancelled {
+  background: rgba($color-red, 0.12);
+  color: $color-red;
+  border: 1px solid rgba($color-red, 0.3);
+}
+
+.status-badge--delivered {
+  background: rgba($color-success, 0.12);
+  color: $color-success;
+  border: 1px solid rgba($color-success, 0.3);
+}
+
+.status-badge--payment_rejected {
+  background: rgba($color-red, 0.12);
+  color: $color-red;
+  border: 1px solid rgba($color-red, 0.3);
+}

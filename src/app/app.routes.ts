@@ -13,6 +13,7 @@ export const appRoutes = {
     root: '',
     checkout: 'checkout',
     confirmation: 'order/:id/confirmation',
+    orders: 'my-orders',
   },
 };
 
@@ -20,8 +21,7 @@ export const routes: Routes = [
   {
     path: appRoutes.public.login,
     title: 'Iniciar sesión | Corsuplementos',
-    loadComponent: () =>
-      import('./domains/auth/features/login/login').then((m) => m.Login),
+    loadComponent: () => import('./domains/auth/features/login/login').then((m) => m.Login),
   },
   {
     path: appRoutes.public.register,
@@ -67,6 +67,12 @@ export const routes: Routes = [
           import('./domains/checkout/features/order-confirmation/order-confirmation').then(
             (m) => m.OrderConfirmation,
           ),
+      },
+      {
+        path: appRoutes.private.orders,
+        title: 'Mis pedidos | Corsuplementos',
+        loadComponent: () =>
+          import('./domains/checkout/features/my-orders/my-orders').then((m) => m.MyOrders),
       },
     ],
   },
