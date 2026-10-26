@@ -15,6 +15,7 @@ export class Header {
   readonly cartService = inject(CartService);
   readonly searchService = inject(SearchService);
   router = inject(Router);
+  isOpen = false;
 
   onSearchInput(event: Event) {
     const inputElement = event.target as HTMLInputElement;
@@ -25,6 +26,14 @@ export class Header {
     if (this.router.url !== '/products') {
       this.router.navigate(['/']);
     }
+  }
+
+  toggleMenu() {
+    this.isOpen = !this.isOpen;
+  }
+
+  closeMenu() {
+    this.isOpen = false;
   }
 
   logout() {

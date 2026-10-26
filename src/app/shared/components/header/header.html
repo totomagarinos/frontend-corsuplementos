@@ -13,21 +13,33 @@
   </div>
 
   <div class="header-actions">
-    <nav class="main-nav">
+    <div class="main-nav">
       <a class="nav-link" routerLink="/cart">
         Carrito
         @if (cartService.itemsCount() > 0) {
           <span class="badge">{{ cartService.itemsCount() }}</span>
         }
       </a>
-    </nav>
+    </div>
 
-    <nav class="auth-nav">
+    <div class="user-menu">
       @if (authService.isAuthenticated()) {
-        <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+        <button class="user-menu__trigger" (click)="toggleMenu()">
+          <span>
+            {{ authService.currentUser()?.first_name }}
+          </span>
+          <span class="material-symbols-outlined"> keyboard_arrow_down </span>
+        </button>
+
+        @if (isOpen) {
+          <div class="user-menu__dropdown">
+            <a routerLink="/my-orders" (click)="closeMenu()">Mis pedidos</a>
+            <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+          </div>
+        }
       } @else {
-        <a class="nav-link" routerLink="/login">Iniciar sesión</a>
+        <a class="login-btn" routerLink="/login">Iniciar sesión</a>
       }
-    </nav>
+    </div>
   </div>
 </header>

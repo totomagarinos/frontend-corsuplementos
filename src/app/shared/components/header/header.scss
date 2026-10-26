@@ -99,7 +99,7 @@
 }
 
 // -----------------------------
-// Acciones (carrito / auth)
+// Acciones (carrito / user)
 // -----------------------------
 .header-actions {
   display: flex;
@@ -114,8 +114,7 @@
   }
 }
 
-.main-nav,
-.auth-nav {
+.main-nav {
   display: flex;
   align-items: center;
   gap: $space-4;
@@ -125,7 +124,70 @@
   }
 }
 
-.nav-link {
+.user-menu {
+  // ancla el dropdown, que se posiciona en absolute
+  position: relative;
+
+  &__trigger {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: $space-1;
+    padding: $space-3;
+    color: $color-text-muted;
+    border-radius: $radius-lg;
+    font-family: $font-body;
+    font-weight: $fw-semibold;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+      border-color: $color-red;
+      color: $color-white;
+      background: rgba($color-red, 0.08);
+    }
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: calc(100% + #{$space-2});
+    right: 0;
+    z-index: $z-dropdown;
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+    min-width: 180px;
+    padding: $space-2;
+    background: $color-bg-elevated;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-md;
+
+    // "Mi perfil" comparte el lenguaje visual de los ítems del menú
+    a {
+      display: block;
+      padding: $space-2 $space-3;
+      color: $color-text-muted;
+      font-family: $font-body;
+      font-size: $fs-sm;
+      font-weight: $fw-semibold;
+      text-decoration: none;
+      border-radius: $radius-md;
+      transition:
+        color $transition-fast,
+        background-color $transition-fast;
+
+      &:hover {
+        color: $color-white;
+        background: $color-surface;
+      }
+    }
+  }
+}
+
+.nav-link,
+.login-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -181,8 +243,17 @@
   box-shadow: $shadow-sm;
 }
 
+// "Cerrar sesión" — mismo ítem de menú que "Mi perfil", pero con tinte de acción
 .logout-btn {
   @include btn-ghost;
-  padding: $space-2 $space-4;
+  width: 100%;
+  padding: $space-2 $space-3;
+  border-color: transparent;
+  border-radius: $radius-md;
   font-size: $fs-sm;
+  text-align: left;
+
+  &:hover {
+    border-color: transparent;
+  }
 }
