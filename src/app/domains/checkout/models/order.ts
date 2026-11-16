@@ -21,7 +21,8 @@ export interface Order {
   customer_name: string;
   customer_email: string;
   customer_phone: string;
-  shipping_option: number;
+  // Nullable: the FK uses SET_NULL, so a deleted shipping option leaves null.
+  shipping_option: number | null;
   shipping_address: string;
   shipping_cost: string;
   subtotal: string;
@@ -30,9 +31,6 @@ export interface Order {
   status: OrderStatus;
   payment_method: PaymentMethod;
   payment_url: string | null;
-  mercadopago_preference_id: string;
-  mercadopago_payment_id: string;
-  stock_deducted: boolean;
   created_at: string;
   items: OrderItem[];
 }

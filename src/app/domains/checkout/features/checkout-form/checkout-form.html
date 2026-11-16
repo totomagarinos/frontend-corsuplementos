@@ -191,21 +191,21 @@
           <label
             class="payment-card"
             [class.selected]="payment_method() === 'efectivo'"
-            [class.disabled]="selectedShipping()?.type !== 'pickup'"
+            [class.disabled]="selectedShipping()?.type !== ShippingType.PICKUP"
           >
             <input
               class="payment-card__radio"
               type="radio"
               name="payment"
               [checked]="payment_method() === 'efectivo'"
-              [disabled]="selectedShipping()?.type !== 'pickup'"
+              [disabled]="selectedShipping()?.type !== ShippingType.PICKUP"
               (change)="payment_method.set(PaymentMethod.EFECTIVO)"
             />
             <span class="payment-card__indicator" aria-hidden="true"></span>
             <span class="payment-card__content">
               <strong>Efectivo</strong>
               <span class="payment-card__desc">
-                @if (selectedShipping()?.type === 'pickup') {
+                @if (selectedShipping()?.type === ShippingType.PICKUP) {
                   Pagás al retirar
                 } @else {
                   Solo disponible para retiro
@@ -224,8 +224,13 @@
         <div class="total-row">
           <span>Envío</span>
           <span>
-            @if (selectedShipping()?.price) {
-              {{ selectedShipping()!.price | currency: 'ARS' : 'symbol' : '1.0-0' }}
+            @if (selectedShipping()?.type === ShippingType.DELIVERY) {
+              @if (selectedShipping()?.price) {
+                {{ selectedShipping()!.price | currency: 'ARS' : 'symbol' : '1.0-0' }}
+                <small class="total-row__note">se paga al repartidor</small>
+              } @else {
+                A confirmar
+              }
             } @else {
               —
             }

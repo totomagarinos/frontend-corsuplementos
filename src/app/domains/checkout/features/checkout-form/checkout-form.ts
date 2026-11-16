@@ -9,6 +9,7 @@ import { ShippingOption, ShippingType } from '../../models/shipping-option';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PaymentMethod } from '../../models/order';
 import { useFormValidator } from '@/app/shared/utils/form-validator';
+import { extractApiErrorMessage } from '@/app/shared/utils/api-error';
 import { FieldError } from '@/app/shared/components/field-error/field-error';
 import { PriceDisplay } from '@/app/shared/components/price-display/price-display';
 import { AuthService } from '@/app/domains/auth/services/auth.service';
@@ -35,6 +36,7 @@ export class CheckoutForm {
   readonly payment_method = signal<PaymentMethod>(PaymentMethod.MERCADO_PAGO);
 
   readonly PaymentMethod = PaymentMethod;
+  readonly ShippingType = ShippingType;
 
   readonly departments = ['Capital', 'Rivadavia', 'Chimbas', 'Santa Lucía', 'Rawson', 'Pocito'];
 
@@ -58,10 +60,10 @@ export class CheckoutForm {
 
   readonly formValidator = useFormValidator(CheckoutSchema, this.validationPayload);
 
-  readonly total = computed(() => {
-    const shippingCost = Number(this.selectedShipping()?.price) || 0;
-    return this.cartService.subtotal() + shippingCost;
-  });
+  // Shipping is never charged online: Uber delivery is paid to the driver, and
+  // the backend forces Order.shipping_cost to 0. The amount charged at checkout
+  // is always the cart subtotal (already VIP-aware).
+  readonly total = computed(() => this.cartService.subtotal());
 
   selectShipping(option: ShippingOption) {
     this.selectedShipping.set(option);
@@ -121,7 +123,7 @@ export class CheckoutForm {
       },
       error: (err) => {
         this.loading.set(false);
-        this.error.set(err.error?.detail ?? 'Error al crear el pedido.');
+        this.error.set(extractApiErrorMessage(err, 'Error al crear el pedido.'));
       },
     });
   }
