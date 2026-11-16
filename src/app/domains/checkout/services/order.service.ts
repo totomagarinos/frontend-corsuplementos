@@ -19,4 +19,8 @@ export class OrderService {
   getMyOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(`${this.apiUrl}/orders/`);
   }
+
+  cancelOrder(id: number): Observable<Order> {
+    return this.http.post<Order>(`${this.apiUrl}/orders/${id}/cancel/`, {});
+  }
 }

@@ -8,6 +8,10 @@
     </h1>
   </header>
 
+  @if (actionError()) {
+    <p class="my-orders__error" role="alert">{{ actionError() }}</p>
+  }
+
   @if (orders.isLoading()) {
     <p class="my-orders__loading">Cargando pedidos...</p>
   } @else if (orders.error()) {
@@ -68,9 +72,42 @@
                 order.total | currency: 'ARS' : 'symbol' : '1.0-0'
               }}</span>
             </div>
-            <a class="order-card__detail" [routerLink]="['/order', order.id, 'confirmation']">
-              Ver detalle
-            </a>
+
+            <div class="order-card__actions">
+              @if (canCancel(order)) {
+                @if (confirmingId() === order.id) {
+                  <span class="order-card__confirm-text">¿Cancelar este pedido?</span>
+                  <button
+                    type="button"
+                    class="order-card__cancel order-card__cancel--danger"
+                    [disabled]="cancellingId() === order.id"
+                    (click)="confirmCancel(order)"
+                  >
+                    {{ cancellingId() === order.id ? 'Cancelando...' : 'Sí, cancelar' }}
+                  </button>
+                  <button
+                    type="button"
+                    class="order-card__cancel"
+                    [disabled]="cancellingId() === order.id"
+                    (click)="dismissCancel()"
+                  >
+                    No
+                  </button>
+                } @else {
+                  <button
+                    type="button"
+                    class="order-card__cancel"
+                    (click)="askToCancel(order)"
+                  >
+                    Cancelar
+                  </button>
+                }
+              }
+
+              <a class="order-card__detail" [routerLink]="['/order', order.id, 'confirmation']">
+                Ver detalle
+              </a>
+            </div>
           </footer>
         </article>
       }
