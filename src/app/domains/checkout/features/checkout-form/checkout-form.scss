@@ -439,6 +439,12 @@
   color: $color-text-muted;
 }
 
+.total-row__note {
+  margin-left: $space-1;
+  font-size: $fs-xs;
+  opacity: 0.8;
+}
+
 .total-final {
   margin-top: $space-2;
   padding-top: $space-3;
