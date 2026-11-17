@@ -5,13 +5,14 @@ import { Router } from '@angular/router';
 import { Auth, LoginData, LoginResponse, RegisterData, TokenContainer, User } from '../models/auth';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { authAdapter } from '../adapters/auth.adapter';
+import { environment } from '@/environments/environment';
 
 @Service()
 export class AuthService {
   http: HttpClient = inject(HttpClient);
   localManager = inject(LocalManagerService);
   router = inject(Router);
-  baseUrl = 'http://localhost:8000/api/auth';
+  baseUrl = `${environment.apiUrl}/auth`;
 
   private readonly accessToken = signal<string | null>(this.loadInitialToken());
   readonly isAuthenticated = computed(() => this.accessToken() !== null);

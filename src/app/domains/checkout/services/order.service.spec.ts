@@ -6,9 +6,10 @@ import {
 } from '@angular/common/http/testing';
 import { OrderService } from './order.service';
 import { CreateOrderPayload, PaymentMethod } from '../models/order';
+import { environment } from '@/environments/environment';
 
 describe('OrderService', () => {
-  const apiUrl = 'http://localhost:8000/api';
+  const apiUrl = environment.apiUrl;
 
   let service: OrderService;
   let httpMock: HttpTestingController;
