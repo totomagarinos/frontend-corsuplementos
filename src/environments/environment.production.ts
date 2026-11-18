@@ -3,5 +3,5 @@
  */
 export const environment = {
   production: true,
-  apiUrl: 'https://REPLACE-WITH-RAILWAY-URL/api',
+  apiUrl: 'https://web-production-d0b6b4df.up.railway.app/api',
 };
