@@ -76,4 +76,12 @@ export const routes: Routes = [
       },
     ],
   },
+  // Must stay last: Angular matches routes in order, so a wildcard placed
+  // earlier would swallow every route declared after it.
+  {
+    path: '**',
+    title: 'Página no encontrada | Corsuplementos',
+    loadComponent: () =>
+      import('./shared/components/not-found/not-found').then((m) => m.NotFound),
+  },
 ];
