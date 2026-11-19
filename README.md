@@ -1,59 +1,108 @@
-# Frontend
+# CorSuplementos — Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.0.
+Angular single-page app for the CorSuplementos store: catalogue, cart, checkout
+and order history.
 
-## Development server
+Deployed on Vercel at `https://frontend-corsuplementos.vercel.app`. It talks to
+the Django API in a separate repository.
 
-To start a local development server, run:
+## Requirements
 
-```bash
-ng serve
-```
+- Node.js 20+ (bun is the package manager: `bun.lock` and
+  `packageManager: bun@1.3.1` in `package.json`)
+- The backend running locally on `http://localhost:8000`
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Running locally
 
 ```bash
-ng generate component component-name
+bun install
+bun start          # ng serve on http://localhost:4200
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The development environment points at `http://localhost:8000/api`
+(`src/environments/environment.ts`). Start the backend first: without it the
+catalogue is empty and checkout cannot reserve stock.
+
+## Scripts
+
+| Command | What it does |
+| --- | --- |
+| `bun start` | Development server with live reload |
+| `bun run build` | Production build into `dist/frontend/browser` |
+| `bun run test` | Vitest in watch mode |
+| `bun run test:ci` | Vitest, single run |
+
+## Environments
+
+Two files, one job each:
+
+- `src/environments/environment.ts` — development, `apiUrl` on localhost.
+- `src/environments/environment.production.ts` — the deployed API URL.
+
+`angular.json` swaps them through `fileReplacements`, so the production bundle
+never carries a localhost URL. If the backend domain changes, edit
+`environment.production.ts`, rebuild and redeploy.
+
+## Structure
+
+```
+src/app/
+├── domains/
+│   ├── auth/       login, register, JWT interceptor, guard
+│   ├── products/   catalogue and product detail
+│   ├── cart/       cart state and cart page
+│   └── checkout/   checkout form, confirmation, order history
+└── shared/
+    ├── components/ header, footer, price display, field error, 404
+    ├── services/   cross-domain helpers
+    └── utils/      API error flattening
+```
+
+Each domain owns its models, services and feature components. Components are
+standalone and load lazily through the route table.
+
+## Routing
+
+`src/app/app.routes.ts` declares the public routes, the authenticated routes
+behind `authGuard`, and a final `**` wildcard that renders the 404 page.
+
+The wildcard must stay last. Angular matches routes in order, so a wildcard
+placed earlier swallows every route declared after it. `app.routes.spec.ts`
+navigates to an unknown URL to prove the fallback is reachable and is not
+blocked by the auth guard.
+
+## Styling
+
+SCSS with a design-token layer in `src/styles/_variables.scss`: colours,
+typography, spacing, radii and breakpoints. Components import it with
+`@use 'variables' as *;` and should not hardcode values that already exist
+there.
+
+## Testing
 
 ```bash
-ng generate --help
+bun run test:ci
 ```
 
-## Building
+16 tests across 6 files: the app shell, the checkout amount rule (shipping is
+never charged online), the order service, error flattening, the 404 page and
+the wildcard route.
 
-To build the project run:
+## Deployment — Vercel
 
-```bash
-ng build
+`vercel.json` holds the whole configuration:
+
+```json
+{
+  "buildCommand": "bun run build",
+  "outputDirectory": "dist/frontend/browser",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+The rewrite is not optional. This is a client-side routed SPA: without it,
+reloading `/my-orders` asks the static host for a file with that name and gets
+a 404, because Angular resolves the route in the browser.
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+After deploying, the backend must list the new origin in `CORS_ALLOWED_ORIGINS`
+and `FRONTEND_URL`, without a trailing slash.
